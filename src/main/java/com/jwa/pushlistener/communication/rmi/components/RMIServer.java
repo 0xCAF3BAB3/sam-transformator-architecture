@@ -26,7 +26,9 @@ public class RMIServer {
 
     public void shutdown() {
         // TODO: implement me
-        System.out.println("RMI server was shutdown");
+        System.out.println("RMI server (registry-port " + portRegistry + ", registry-remoteobject-name '" +
+                NAME_REMOTEOBJECT_REGISTRY_LOOKUP + "') was shutdown"
+        );
     }
 
     private class RMIServerRunnable implements Runnable {
@@ -36,7 +38,9 @@ public class RMIServer {
                 Remote stub = UnicastRemoteObject.exportObject(remoteInterfaceImpl, 0);
                 Registry registry = LocateRegistry.createRegistry(portRegistry);
                 registry.bind(NAME_REMOTEOBJECT_REGISTRY_LOOKUP, stub);
-                System.out.println("RMI server is now running");
+                System.out.println("RMI server (registry-port " + portRegistry + ", registry-remoteobject-name '" +
+                        NAME_REMOTEOBJECT_REGISTRY_LOOKUP + "') is now running"
+                );
             } catch (RemoteException | AlreadyBoundException e) {
                 e.printStackTrace();
             }

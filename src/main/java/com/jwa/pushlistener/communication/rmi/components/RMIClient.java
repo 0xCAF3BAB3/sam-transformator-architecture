@@ -26,19 +26,11 @@ public class RMIClient implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         // TODO: implement me
         System.out.println("Connection to RMI server '" + hostname + "' on registry-port " + portRegistry +
                 " and registry-remoteobject-name '" + RMIServer.NAME_REMOTEOBJECT_REGISTRY_LOOKUP +
                 "' was closed"
         );
-    }
-
-    public static void close(RMIClient rmiClient) {
-        if (rmiClient != null) {
-            try {
-                rmiClient.close();
-            } catch (Exception ignored) {}
-        }
     }
 }

@@ -32,8 +32,12 @@ public class RMIClientImpl implements AutoCloseable {
 
     @Override
     public void close() {
-        RMIClient.close(clientNode2);
-        RMIClient.close(clientNode3);
+        if (clientNode2 != null) {
+            clientNode2.close();
+        }
+        if (clientNode3 != null) {
+            clientNode3.close();
+        }
     }
 
     private RMIRemoteInterfaceNode2 getClientNode2() throws RemoteException, NotBoundException {
