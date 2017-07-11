@@ -13,9 +13,6 @@
         <module>node2</module>
         <module>node3</module>
     </modules>
-    <prerequisites>
-        <maven>3.3.3</maven>
-    </prerequisites>
     <properties>
         <!-- project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
