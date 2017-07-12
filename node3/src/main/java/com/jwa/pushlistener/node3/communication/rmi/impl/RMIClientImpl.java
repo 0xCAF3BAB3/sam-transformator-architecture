@@ -2,8 +2,8 @@ package com.jwa.pushlistener.node3.communication.rmi.impl;
 
 import com.jwa.pushlistener.messagemodel.FFMessage;
 import com.jwa.pushlistener.messagemodel.FMessage;
-import com.jwa.pushlistener.communication.rmi.components.RMIClient;
-import com.jwa.pushlistener.communication.rmi.interfaces.RMIRemoteInterfaceNode2;
+import com.jwa.pushlistener.ports.rmi.components.RMIClient;
+import com.jwa.pushlistener.ports.rmi.interfaces.RMIRemoteInterfaceNode2;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

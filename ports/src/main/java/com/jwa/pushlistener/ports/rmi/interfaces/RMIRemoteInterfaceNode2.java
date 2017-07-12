@@ -1,4 +1,4 @@
-package com.jwa.pushlistener.communication.rmi.interfaces;
+package com.jwa.pushlistener.ports.rmi.interfaces;
 
 import com.jwa.pushlistener.messagemodel.AAMessage;
 import com.jwa.pushlistener.messagemodel.AMessage;
@@ -6,7 +6,7 @@ import com.jwa.pushlistener.messagemodel.CCMessage;
 import com.jwa.pushlistener.messagemodel.CMessage;
 import com.jwa.pushlistener.messagemodel.FFMessage;
 import com.jwa.pushlistener.messagemodel.FMessage;
-import com.jwa.pushlistener.communication.rmi.components.RMIRemoteInterface;
+import com.jwa.pushlistener.ports.rmi.components.RMIRemoteInterface;
 
 import java.rmi.RemoteException;
 

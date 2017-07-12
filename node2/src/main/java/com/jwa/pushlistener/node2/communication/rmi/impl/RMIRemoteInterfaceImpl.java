@@ -6,7 +6,7 @@ import com.jwa.pushlistener.messagemodel.CCMessage;
 import com.jwa.pushlistener.messagemodel.CMessage;
 import com.jwa.pushlistener.messagemodel.FFMessage;
 import com.jwa.pushlistener.messagemodel.FMessage;
-import com.jwa.pushlistener.communication.rmi.interfaces.RMIRemoteInterfaceNode2;
+import com.jwa.pushlistener.ports.rmi.interfaces.RMIRemoteInterfaceNode2;
 
 import java.rmi.RemoteException;
 

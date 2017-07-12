@@ -15,11 +15,11 @@
         <!-- pushlistener -->
         <dependency>
             <groupId>com.jwa.pushlistener</groupId>
-            <artifactId>communication</artifactId>
+            <artifactId>messagemodel</artifactId>
         </dependency>
         <dependency>
             <groupId>com.jwa.pushlistener</groupId>
-            <artifactId>messagemodel</artifactId>
+            <artifactId>ports</artifactId>
         </dependency>
     </dependencies>
     <profiles>

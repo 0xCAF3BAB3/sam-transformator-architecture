@@ -8,7 +8,7 @@
     <name>Push-Listener</name>
     <modules>
         <module>messagemodel</module>
-        <module>communication</module>
+        <module>ports</module>
         <module>node1</module>
         <module>node2</module>
         <module>node3</module>
@@ -36,12 +36,12 @@
             <!-- pushlistener -->
             <dependency>
                 <groupId>com.jwa.pushlistener</groupId>
-                <artifactId>communication</artifactId>
+                <artifactId>messagemodel</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.jwa.pushlistener</groupId>
-                <artifactId>messagemodel</artifactId>
+                <artifactId>ports</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

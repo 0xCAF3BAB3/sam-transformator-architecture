@@ -1,4 +1,4 @@
-package com.jwa.pushlistener.communication.rmi.components;
+package com.jwa.pushlistener.ports.rmi.components;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;

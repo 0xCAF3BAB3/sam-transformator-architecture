@@ -5,9 +5,9 @@ import com.jwa.pushlistener.messagemodel.AMessage;
 import com.jwa.pushlistener.messagemodel.CCMessage;
 import com.jwa.pushlistener.messagemodel.CMessage;
 import com.jwa.pushlistener.messagemodel.DMessage;
-import com.jwa.pushlistener.communication.rmi.components.RMIClient;
-import com.jwa.pushlistener.communication.rmi.interfaces.RMIRemoteInterfaceNode2;
-import com.jwa.pushlistener.communication.rmi.interfaces.RMIRemoteInterfaceNode3;
+import com.jwa.pushlistener.ports.rmi.components.RMIClient;
+import com.jwa.pushlistener.ports.rmi.interfaces.RMIRemoteInterfaceNode2;
+import com.jwa.pushlistener.ports.rmi.interfaces.RMIRemoteInterfaceNode3;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

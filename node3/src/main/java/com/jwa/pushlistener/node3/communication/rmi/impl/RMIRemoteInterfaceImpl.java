@@ -2,7 +2,7 @@ package com.jwa.pushlistener.node3.communication.rmi.impl;
 
 import com.jwa.pushlistener.messagemodel.DMessage;
 import com.jwa.pushlistener.messagemodel.EMessage;
-import com.jwa.pushlistener.communication.rmi.interfaces.RMIRemoteInterfaceNode3;
+import com.jwa.pushlistener.ports.rmi.interfaces.RMIRemoteInterfaceNode3;
 
 import java.rmi.RemoteException;
 

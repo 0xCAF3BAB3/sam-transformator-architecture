@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.jwa.pushlistener</groupId>
-    <artifactId>communication</artifactId>
+    <artifactId>ports</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <!-- pushlistener -->

@@ -3,7 +3,7 @@ package com.jwa.pushlistener.node1;
 import com.jwa.pushlistener.messagemodel.AMessage;
 import com.jwa.pushlistener.messagemodel.CMessage;
 import com.jwa.pushlistener.messagemodel.DMessage;
-import com.jwa.pushlistener.communication.rmi.components.RMIServer;
+import com.jwa.pushlistener.ports.rmi.components.RMIServer;
 import com.jwa.pushlistener.node1.communication.rmi.impl.RMIClientImpl;
 import com.jwa.pushlistener.node1.communication.rmi.impl.RMIRemoteInterfaceImpl;
 
