@@ -16,10 +16,12 @@
         <dependency>
             <groupId>com.jwa.pushlistener</groupId>
             <artifactId>messagemodel</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jwa.pushlistener</groupId>
             <artifactId>ports</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <profiles>
