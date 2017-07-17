@@ -2,39 +2,30 @@ package com.jwa.pushlistener.node2;
 
 import com.jwa.pushlistener.messagemodel.BMessage;
 import com.jwa.pushlistener.messagemodel.EMessage;
-import com.jwa.pushlistener.ports.rmi.components.RMIServer;
-import com.jwa.pushlistener.node2.communication.rmi.impl.RMIClientImpl;
-import com.jwa.pushlistener.node2.communication.rmi.impl.RMIRemoteInterfaceImpl;
-
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import com.jwa.pushlistener.ports.communication.CommunicationException;
 
 public class Main {
-    public static void main( String[] args ) {
-        RMIRemoteInterfaceImpl impl = new RMIRemoteInterfaceImpl();
-        RMIServer rmiServer = new RMIServer(1102, impl);
-        rmiServer.start();
-        try (RMIClientImpl rmiClient = new RMIClientImpl()) {
-            // TODO: implement me
-            // wait a bit until we manually start the other nodes (= their Main.java or Maven profile)
-            try {
-                Thread.sleep(20 * 1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            try {
-                rmiClient.execute(new BMessage());
-                rmiClient.execute(new EMessage());
-            } catch (RemoteException | NotBoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                Thread.sleep(20 * 1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        } finally {
-            rmiServer.shutdown();
+    public static void main( String[] args ) throws CommunicationException {
+        Ports ports = new Ports();
+        ports.startReceiver();
+
+        // wait a bit until we manually start the other nodes (= their Main.java or Maven profile)
+        try {
+            Thread.sleep(20 * 1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
+
+        ports.send(new BMessage());
+        ports.send(new EMessage());
+
+        try {
+            Thread.sleep(20 * 1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        ports.shutdownSender();
+        ports.shutdownReceiver();
     }
 }
