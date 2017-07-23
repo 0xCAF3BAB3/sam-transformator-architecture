@@ -7,57 +7,57 @@ import com.jwa.pushlistener.ports.communication.CommunicationException;
 import com.jwa.pushlistener.ports.communication.port.SynchronousSender;
 import com.jwa.pushlistener.ports.communication.port.impl.rmi.config.RmiSenderConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class RmiSynchronousSender implements SynchronousSender {
+public final class RmiSynchronousSender implements SynchronousSender {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RmiSynchronousSender.class);
     private final RmiSenderConfig config;
-
     private RmiInterface remoteInterface;
 
-    public RmiSynchronousSender(RmiSenderConfig config) {
+    public RmiSynchronousSender(final RmiSenderConfig config) {
         this.config = config;
     }
 
     @Override
-    public Optional<MessageModel> execute(MessageModel msg) throws IllegalArgumentException, CommunicationException {
-        if (msg == null) {
-            throw new IllegalArgumentException();
-        }
+    public final void connect() throws CommunicationException {
         try {
-            return remoteInterface.process(msg);
-        } catch (RemoteException e) {
-            throw new CommunicationException("...", e);
-        }
-    }
-
-    @Override
-    public void connect() throws CommunicationException {
-        Registry registry = null;
-        try {
-            registry = LocateRegistry.getRegistry(config.getHostname(), config.getPortRegistry());
-        } catch (RemoteException e) {
-            throw new CommunicationException("...", e); // TODO:
-        }
-
-        try {
+            final Registry registry = LocateRegistry.getRegistry(config.getHostname(), config.getPortRegistry());
             remoteInterface = (RmiInterface) registry.lookup(config.getNameRemoteobjectRegistryLookup());
         } catch (RemoteException | NotBoundException e) {
-            throw new CommunicationException("...", e); // TODO:
+            throw new CommunicationException("Registry lookup failed: " + e.getMessage(), e);
         }
-
-        System.out.println("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
+        LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
                 " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
                 "' is now established"
         );
     }
 
     @Override
-    public void disconnect() throws CommunicationException {
-        // TODO: implement me
-        System.out.println("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
+    public final Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, CommunicationException {
+        if (msg == null) {
+            throw new IllegalArgumentException();
+        }
+        final Optional<MessageModel> response;
+        try {
+            response = remoteInterface.execute(msg);
+        } catch (RemoteException e) {
+            throw new CommunicationException("Message executing failed: " + e.getMessage(), e);
+        }
+        LOGGER.info("Message was executed");
+        LOGGER.info("Message response received");
+        return response;
+    }
+
+    @Override
+    public final void disconnect() {
+        // Connection between RMI client and server is implicit and closes automatically after a short idle period of time.
+        LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
                 " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
                 "' was closed"
         );

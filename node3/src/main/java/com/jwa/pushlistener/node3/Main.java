@@ -4,9 +4,9 @@ import com.jwa.pushlistener.messagemodel.FMessage;
 import com.jwa.pushlistener.ports.communication.CommunicationException;
 import com.jwa.pushlistener.ports.communication.port.Sender;
 
-public class Main {
-    public static void main( String[] args ) throws CommunicationException {
-        Ports ports = new Ports();
+public final class Main {
+    public static void main(final String[] args) throws CommunicationException {
+        final Ports ports = new Ports();
         ports.start();
 
         try {
@@ -15,7 +15,7 @@ public class Main {
             Thread.currentThread().interrupt();
         }
 
-        Sender senderOnPort2 = ports.getSender("port2");
+        final Sender senderOnPort2 = ports.getSender("port2");
         senderOnPort2.connect();
         senderOnPort2.execute(new FMessage());
 

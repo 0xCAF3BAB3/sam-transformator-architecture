@@ -15,7 +15,7 @@ public interface Sender extends Port {
      * @throws IllegalArgumentException if msg is null
      * @throws CommunicationException
      */
-    Optional<MessageModel> execute(MessageModel msg) throws IllegalArgumentException, CommunicationException;
+    Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, CommunicationException;
 
-    void disconnect() throws CommunicationException;
+    void disconnect();
 }

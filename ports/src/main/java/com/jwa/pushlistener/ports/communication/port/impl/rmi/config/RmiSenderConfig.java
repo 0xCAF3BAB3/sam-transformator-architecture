@@ -1,14 +1,14 @@
 package com.jwa.pushlistener.ports.communication.port.impl.rmi.config;
 
-public class RmiSenderConfig extends AbstractRmiConfig {
+public final class RmiSenderConfig extends AbstractRmiConfig {
     private final String hostname;
 
-    public RmiSenderConfig(String hostname, int portRegistry) {
+    public RmiSenderConfig(final String hostname, final int portRegistry) {
         super(portRegistry);
         this.hostname = hostname;
     }
 
-    public String getHostname() {
+    public final String getHostname() {
         return hostname;
     }
 }

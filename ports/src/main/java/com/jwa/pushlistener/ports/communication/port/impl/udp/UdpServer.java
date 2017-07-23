@@ -4,8 +4,10 @@ import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.messagemodel.MessageModel;
 import com.jwa.pushlistener.ports.communication.port.AsynchronousSenderCallback;
-import com.jwa.pushlistener.ports.communication.CommunicationException;
 import com.jwa.pushlistener.ports.communication.port.ReceiverHandler;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,86 +17,85 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UdpServer implements Runnable {
+final class UdpServer implements Runnable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UdpServer.class);
     private final int NUMBER_OF_CONCURRENT_PROCESSED_DATAGRAMS = 30;
-
     private final int port;
     private ReceiverHandler handler;
     private AsynchronousSenderCallback callback;
-
     private ExecutorService executorService;
     private DatagramSocket datagramSocket;
 
-    public UdpServer(int port, ReceiverHandler handler) {
+    UdpServer(final int port, final ReceiverHandler handler) {
         this.port = port;
         this.handler = handler;
     }
 
-    public UdpServer(int port, AsynchronousSenderCallback callback) {
+    UdpServer(final int port, final AsynchronousSenderCallback callback) {
         this.port = port;
         this.callback = callback;
     }
 
-    public void start() throws CommunicationException {
-        Thread t = new Thread(this, "UdpServer_port_" + port);
+    final void start() {
+        final Thread t = new Thread(this, "UdpServer{port=" + port + "}");
         this.executorService = Executors.newFixedThreadPool(NUMBER_OF_CONCURRENT_PROCESSED_DATAGRAMS, runnable -> new Thread(runnable, "UdpRequestWorkers"));
         t.start();
     }
 
     @Override
     @SuppressWarnings("InfiniteLoopStatement")
-    public void run() {
+    public final void run() {
         try {
             datagramSocket = new DatagramSocket(port);
         } catch (SocketException e) {
+            LOGGER.error("Datagram-socket creation failed: " + e.getMessage(), e);
             return;
         }
-
         try {
             while (true) {
-                byte[] buffer = new byte[UdpUtils.DATAGRAM_BUFFER_SIZE];
-                DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
+                final byte[] buffer = new byte[UdpUtils.DATAGRAM_BUFFER_SIZE];
+                final DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
                 datagramSocket.receive(datagramPacket);
                 executorService.execute(new UdpRequestWorker(datagramPacket));
             }
-        } catch (SocketException e) {
-            // gets thrown when socket is closed --> ignore
+        } catch (SocketException ignored) {
+            // gets thrown when socket is closed
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Datagram-packet receiving failed: " + e.getMessage(), e);
         }
     }
 
-    public void shutdown() throws CommunicationException {
+    final void shutdown() {
         if (!executorService.isShutdown()) {
             executorService.shutdown();
         }
         UdpUtils.close(datagramSocket);
     }
 
-    public DatagramSocket getDatagramSocket() {
+    final DatagramSocket getDatagramSocket() {
         return datagramSocket;
     }
 
-    private class UdpRequestWorker implements Runnable {
+    private final class UdpRequestWorker implements Runnable {
         private final DatagramPacket datagramPacket;
 
-        private UdpRequestWorker(DatagramPacket datagramPacket) {
+        private UdpRequestWorker(final DatagramPacket datagramPacket) {
             this.datagramPacket = datagramPacket;
         }
 
         @Override
-        public void run() {
+        public final void run() {
             try {
-                MessageModel request = UdpUtils.deserialize(datagramPacket.getData());
+                final MessageModel request = UdpUtils.deserialize(datagramPacket.getData());
                 if (handler != null) {
-                    Optional<MessageModel> response = handler.handle(request);
-                    SocketAddress recipient = datagramPacket.getSocketAddress();
+                    final Optional<MessageModel> response = handler.handle(request);
+                    final SocketAddress recipient = datagramPacket.getSocketAddress();
                     UdpUtils.send(response.or(new UdpAckMessage()), recipient, datagramSocket);
                 } else {
                     callback.process(request);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("UDP-request handling failed: " + e.getMessage(), e);
             }
         }
     }

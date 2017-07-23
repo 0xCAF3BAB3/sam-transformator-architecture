@@ -1,14 +1,14 @@
 package com.jwa.pushlistener.ports.communication.port.impl.udp.config;
 
-public class UdpSenderConfig extends AbstractUdpConfig {
+public final class UdpSenderConfig extends AbstractUdpConfig {
     private final String hostname;
 
-    public UdpSenderConfig(String hostname, int port) {
+    public UdpSenderConfig(final String hostname, final int port) {
         super(port);
         this.hostname = hostname;
     }
 
-    public String getHostname() {
+    public final String getHostname() {
         return hostname;
     }
 }

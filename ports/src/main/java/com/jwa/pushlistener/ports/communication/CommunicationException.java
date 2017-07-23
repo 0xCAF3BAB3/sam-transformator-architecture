@@ -1,7 +1,7 @@
 package com.jwa.pushlistener.ports.communication;
 
-public class CommunicationException extends Exception {
-    public CommunicationException(String message, Throwable cause) {
+public final class CommunicationException extends Exception {
+    public CommunicationException(final String message, final Throwable cause) {
         super (message, cause);
     }
 }

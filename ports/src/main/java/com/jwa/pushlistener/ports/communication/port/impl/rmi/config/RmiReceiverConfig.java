@@ -1,7 +1,7 @@
 package com.jwa.pushlistener.ports.communication.port.impl.rmi.config;
 
-public class RmiReceiverConfig extends AbstractRmiConfig {
-    public RmiReceiverConfig(int portRegistry) {
+public final class RmiReceiverConfig extends AbstractRmiConfig {
+    public RmiReceiverConfig(final int portRegistry) {
         super(portRegistry);
     }
 }

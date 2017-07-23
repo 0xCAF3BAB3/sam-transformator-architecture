@@ -8,5 +8,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RmiInterface extends Remote {
-    Optional<MessageModel> process(MessageModel msg) throws RemoteException;
+    Optional<MessageModel> execute(final MessageModel msg) throws RemoteException;
 }

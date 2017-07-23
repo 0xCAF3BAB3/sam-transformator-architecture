@@ -11,5 +11,5 @@ public interface ReceiverHandler {
      * @return
      * @throws IllegalArgumentException if msg is null
      */
-    Optional<MessageModel> handle(MessageModel msg) throws IllegalArgumentException;
+    Optional<MessageModel> handle(final MessageModel msg) throws IllegalArgumentException;
 }

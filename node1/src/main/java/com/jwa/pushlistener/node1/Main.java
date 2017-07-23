@@ -6,9 +6,9 @@ import com.jwa.pushlistener.messagemodel.DMessage;
 import com.jwa.pushlistener.ports.communication.CommunicationException;
 import com.jwa.pushlistener.ports.communication.port.Sender;
 
-public class Main {
-    public static void main( String[] args ) throws CommunicationException {
-        Ports ports = new Ports();
+public final class Main {
+    public static void main(final String[] args) throws CommunicationException {
+        final Ports ports = new Ports();
         ports.start();
 
         try {
@@ -17,15 +17,15 @@ public class Main {
             Thread.currentThread().interrupt();
         }
 
-        Sender senderOnPort1 = ports.getSender("port1");
+        final Sender senderOnPort1 = ports.getSender("port1");
         senderOnPort1.connect();
         senderOnPort1.execute(new AMessage());
 
-        Sender senderOnPort3 = ports.getSender("port3");
+        final Sender senderOnPort3 = ports.getSender("port3");
         senderOnPort3.connect();
         senderOnPort3.execute(new CMessage());
 
-        Sender senderOnPort4 = ports.getSender("port4");
+        final Sender senderOnPort4 = ports.getSender("port4");
         senderOnPort4.connect();
         senderOnPort4.execute(new DMessage());
 

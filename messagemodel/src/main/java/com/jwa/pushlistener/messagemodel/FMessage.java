@@ -1,4 +1,4 @@
 package com.jwa.pushlistener.messagemodel;
 
-public class FMessage extends MessageModel {
+public final class FMessage implements MessageModel {
 }

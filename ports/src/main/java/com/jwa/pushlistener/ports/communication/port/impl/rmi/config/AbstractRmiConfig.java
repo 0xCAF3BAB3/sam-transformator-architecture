@@ -3,15 +3,15 @@ package com.jwa.pushlistener.ports.communication.port.impl.rmi.config;
 abstract class AbstractRmiConfig {
     private final int portRegistry;
 
-    AbstractRmiConfig(int portRegistry) {
+    AbstractRmiConfig(final int portRegistry) {
         this.portRegistry = portRegistry;
     }
 
-    public int getPortRegistry() {
+    public final int getPortRegistry() {
         return portRegistry;
     }
 
-    public String getNameRemoteobjectRegistryLookup() {
+    public final String getNameRemoteobjectRegistryLookup() {
         return "RemoteInterfaceObject";
     }
 }

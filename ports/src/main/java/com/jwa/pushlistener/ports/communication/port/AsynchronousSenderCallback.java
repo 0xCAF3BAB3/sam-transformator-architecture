@@ -8,5 +8,5 @@ public interface AsynchronousSenderCallback {
      * @param msg must not be null
      * @throws IllegalArgumentException if msg is null
      */
-    void process(MessageModel msg) throws IllegalArgumentException;
+    void process(final MessageModel msg) throws IllegalArgumentException;
 }

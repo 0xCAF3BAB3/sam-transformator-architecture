@@ -9,13 +9,18 @@ import com.jwa.pushlistener.ports.communication.port.impl.rmi.RmiSynchronousSend
 import com.jwa.pushlistener.ports.communication.port.impl.rmi.config.RmiReceiverConfig;
 import com.jwa.pushlistener.ports.communication.port.impl.rmi.config.RmiSenderConfig;
 
-public class Ports extends AbstractPorts {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public final class Ports extends AbstractPorts {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Ports.class);
+
     public Ports() {
         super.addPort("port1", new RmiSynchronousSender(new RmiSenderConfig("127.0.0.1", 11021)));
 
-        Receiver receiverOnPort2 = new RmiReceiver(new RmiReceiverConfig(11012));
+        final Receiver receiverOnPort2 = new RmiReceiver(new RmiReceiverConfig(11012));
         receiverOnPort2.register(msg -> {
-            System.out.println("port2 got called by other component");
+            LOGGER.info("Port2 got called by other component");
             return Optional.absent();
         });
         super.addPort("port2", receiverOnPort2);

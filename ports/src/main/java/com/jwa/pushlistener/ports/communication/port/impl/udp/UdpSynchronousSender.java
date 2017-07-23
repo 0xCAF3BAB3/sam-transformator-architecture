@@ -7,58 +7,61 @@ import com.jwa.pushlistener.ports.communication.CommunicationException;
 import com.jwa.pushlistener.ports.communication.port.SynchronousSender;
 import com.jwa.pushlistener.ports.communication.port.impl.udp.config.UdpSenderConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 
-public class UdpSynchronousSender implements SynchronousSender {
+public final class UdpSynchronousSender implements SynchronousSender {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UdpSynchronousSender.class);
     private final UdpSenderConfig config;
-
     private DatagramSocket datagramSocket;
 
-    public UdpSynchronousSender(UdpSenderConfig config) {
+    public UdpSynchronousSender(final UdpSenderConfig config) {
         this.config = config;
     }
 
     @Override
-    public void connect() throws CommunicationException {
+    public final void connect() throws CommunicationException {
         try {
-            datagramSocket = new DatagramSocket(0); // use any free port
+            datagramSocket = new DatagramSocket(0); // 0 = use any free port
         } catch (SocketException e) {
-            throw new CommunicationException("...", e);
+            throw new CommunicationException("Datagram-socket creation failed: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public Optional<MessageModel> execute(MessageModel msg) throws IllegalArgumentException, CommunicationException {
+    public final Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, CommunicationException {
         if (msg == null) {
             throw new IllegalArgumentException();
         }
-
         try {
-            InetSocketAddress recipient = new InetSocketAddress(config.getHostname(), config.getPort());
+            final InetSocketAddress recipient = new InetSocketAddress(config.getHostname(), config.getPort());
             UdpUtils.send(msg, recipient, datagramSocket);
         } catch (IOException e) {
-            throw new CommunicationException("...", e);
+            throw new CommunicationException("Message sending failed: " + e.getMessage(), e);
         }
-
-        byte[] buffer = new byte[UdpUtils.DATAGRAM_BUFFER_SIZE];
-        DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
-        // listen for reply and block until then
-        // TODO: add timeout (currently infinite)
+        LOGGER.info("Message was executed");
+        final byte[] buffer = new byte[UdpUtils.DATAGRAM_BUFFER_SIZE];
+        final DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
+        // listen for reply and block until then (or until timeout)
+        final MessageModel response;
         try {
             datagramSocket.receive(datagramPacket);
-            MessageModel response = UdpUtils.deserialize(datagramPacket.getData());
-            return response instanceof UdpAckMessage ? Optional.absent() : Optional.of(response);
+            response = UdpUtils.deserialize(datagramPacket.getData());
         } catch (IOException e) {
-            throw new CommunicationException("...", e);
+            throw new CommunicationException("Message receiving failed: " + e.getMessage(), e);
         }
+        LOGGER.info("Message response received");
+        return response instanceof UdpAckMessage ? Optional.absent() : Optional.of(response);
     }
 
     @Override
-    public void disconnect() throws CommunicationException {
+    public final void disconnect() {
         UdpUtils.close(datagramSocket);
     }
 }
