@@ -1,9 +1,9 @@
-package com.jwa.pushlistener.ports.communication.impl.rmi.config;
+package com.jwa.pushlistener.ports.communication.port.impl.rmi.config;
 
-public class RMIGeneralConfig {
+abstract class AbstractRmiConfig {
     private final int portRegistry;
 
-    public RMIGeneralConfig(int portRegistry) {
+    AbstractRmiConfig(int portRegistry) {
         this.portRegistry = portRegistry;
     }
 

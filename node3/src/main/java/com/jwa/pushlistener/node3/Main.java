@@ -1,22 +1,13 @@
 package com.jwa.pushlistener.node3;
 
-import com.jwa.pushlistener.messagemodel.FFMessage;
 import com.jwa.pushlistener.messagemodel.FMessage;
 import com.jwa.pushlistener.ports.communication.CommunicationException;
+import com.jwa.pushlistener.ports.communication.port.Sender;
 
 public class Main {
     public static void main( String[] args ) throws CommunicationException {
         Ports ports = new Ports();
-        ports.startReceiver();
-
-        // wait a bit until we manually start the other nodes (= their Main.java or Maven profile)
-        try {
-            Thread.sleep(20 * 1000);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-
-        FFMessage ffMessage = ports.send(new FMessage());
+        ports.start();
 
         try {
             Thread.sleep(20 * 1000);
@@ -24,7 +15,16 @@ public class Main {
             Thread.currentThread().interrupt();
         }
 
-        ports.shutdownSender();
-        ports.shutdownReceiver();
+        Sender senderOnPort2 = ports.getSender("port2");
+        senderOnPort2.connect();
+        senderOnPort2.execute(new FMessage());
+
+        try {
+            Thread.sleep(20 * 1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        ports.shutdown();
     }
 }

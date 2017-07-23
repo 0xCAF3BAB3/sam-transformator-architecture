@@ -1,8 +1,12 @@
-package com.jwa.pushlistener.ports.communication.impl.rmi;
+package com.jwa.pushlistener.ports.communication.port.impl.rmi;
 
+import com.google.common.base.Optional;
+
+import com.jwa.pushlistener.messagemodel.MessageModel;
 import com.jwa.pushlistener.ports.communication.CommunicationException;
-import com.jwa.pushlistener.ports.communication.Receiver;
-import com.jwa.pushlistener.ports.communication.impl.rmi.config.RMIReceiverConfig;
+import com.jwa.pushlistener.ports.communication.port.ReceiverHandler;
+import com.jwa.pushlistener.ports.communication.port.Receiver;
+import com.jwa.pushlistener.ports.communication.port.impl.rmi.config.RmiReceiverConfig;
 
 import java.rmi.AlreadyBoundException;
 import java.rmi.Remote;
@@ -11,16 +15,23 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RMIReceiver<T extends RMIPortInterface> implements Receiver<T> {
-    private final RMIReceiverConfig config;
+public class RmiReceiver implements Receiver {
+    private final RmiReceiverConfig config;
 
-    public RMIReceiver(RMIReceiverConfig config) {
+    private ReceiverHandler handler;
+
+    public RmiReceiver(RmiReceiverConfig config) {
         this.config = config;
     }
 
     @Override
+    public void register(ReceiverHandler handler) {
+        this.handler = handler;
+    }
+
+    @Override
     public void start() throws CommunicationException {
-        RMIServerRunnable runnable = new RMIServerRunnable();
+        Runnable runnable = new RMIServerRunnable();
         Thread t = new Thread(runnable, "RMIServer");
         t.start();
     }
@@ -34,12 +45,21 @@ public class RMIReceiver<T extends RMIPortInterface> implements Receiver<T> {
     }
 
     private class RMIServerRunnable implements Runnable {
+        private class DelegateRmiInterface extends UnicastRemoteObject implements RmiInterface {
+            private DelegateRmiInterface() throws RemoteException {}
+
+            @Override
+            public Optional<MessageModel> process(MessageModel msg) throws RemoteException {
+                return handler.handle(msg);
+            }
+        }
+
         @Override
         public void run() {
             try {
-                Remote stub = UnicastRemoteObject.exportObject(config.getInterfaceImpl(), 0);
                 Registry registry = LocateRegistry.createRegistry(config.getPortRegistry());
-                registry.bind(config.getNameRemoteobjectRegistryLookup(), stub);
+                Remote delegateInterfaceImpl = new DelegateRmiInterface();
+                registry.bind(config.getNameRemoteobjectRegistryLookup(), delegateInterfaceImpl);
                 System.out.println("RMI server (registry-port " + config.getPortRegistry() + ", registry-remoteobject-name '" +
                         config.getNameRemoteobjectRegistryLookup() + "') is now running"
                 );
