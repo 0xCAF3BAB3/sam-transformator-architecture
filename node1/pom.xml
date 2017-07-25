@@ -3,23 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.jwa.pushlistener</groupId>
+        <groupId>com.jwa.pushlistener.code</groupId>
         <artifactId>architecture</artifactId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.jwa.pushlistener.architecture</groupId>
+    <groupId>com.jwa.pushlistener.code.architecture</groupId>
     <artifactId>node1</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <!-- pushlistener -->
         <dependency>
-            <groupId>com.jwa.pushlistener.architecture</groupId>
+            <groupId>com.jwa.pushlistener.code.architecture</groupId>
             <artifactId>messagemodel</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.jwa.pushlistener.architecture</groupId>
+            <groupId>com.jwa.pushlistener.code.architecture</groupId>
             <artifactId>ports</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -41,7 +41,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <mainClass>com.jwa.pushlistener.architecture.node1.Main</mainClass>
+                            <mainClass>com.jwa.pushlistener.code.architecture.node1.Main</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
