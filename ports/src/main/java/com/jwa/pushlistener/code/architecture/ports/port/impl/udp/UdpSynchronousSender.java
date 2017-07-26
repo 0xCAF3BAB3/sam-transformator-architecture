@@ -72,7 +72,9 @@ public final class UdpSynchronousSender implements SynchronousSender {
 
     @Override
     public final void disconnect() {
-        UdpUtils.close(datagramSocket);
-        connected = false;
+        if (isConnected()) {
+            UdpUtils.close(datagramSocket);
+            connected = false;
+        }
     }
 }

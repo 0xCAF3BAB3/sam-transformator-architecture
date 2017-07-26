@@ -66,11 +66,13 @@ public final class RmiSynchronousSender implements SynchronousSender {
 
     @Override
     public final void disconnect() {
-        // Connection between RMI client and server is implicit and closes automatically after a short idle period of time.
-        connected = false;
-        LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
-                " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
-                "' was closed"
-        );
+        if (isConnected()) {
+            // Connection between RMI client and server is implicit and closes automatically after a short idle period of time.
+            connected = false;
+            LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
+                    " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
+                    "' was closed"
+            );
+        }
     }
 }

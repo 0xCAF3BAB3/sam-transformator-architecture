@@ -62,7 +62,9 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
 
     @Override
     public final void disconnect() {
-        udpServer.shutdown();
-        connected = false;
+        if (isConnected()) {
+            udpServer.shutdown();
+            connected = false;
+        }
     }
 }

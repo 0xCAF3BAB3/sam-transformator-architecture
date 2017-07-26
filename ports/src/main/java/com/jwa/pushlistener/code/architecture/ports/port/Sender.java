@@ -21,5 +21,9 @@ public interface Sender extends Port {
      */
     Optional<MessageModel> execute(final MessageModel msg) throws PortException;
 
+    /**
+     * Closes the connection.
+     * If already disconnected: no operation.
+     */
     void disconnect();
 }
