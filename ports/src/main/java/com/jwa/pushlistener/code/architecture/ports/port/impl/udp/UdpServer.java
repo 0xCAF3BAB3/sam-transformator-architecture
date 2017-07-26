@@ -76,6 +76,14 @@ final class UdpServer implements Runnable {
         return datagramSocket;
     }
 
+    final void setHandler(final ReceiverHandler handler) {
+        this.handler = handler;
+    }
+
+    final void setCallback(final AsynchronousSenderCallback callback) {
+        this.callback = callback;
+    }
+
     private final class UdpRequestWorker implements Runnable {
         private final DatagramPacket datagramPacket;
 

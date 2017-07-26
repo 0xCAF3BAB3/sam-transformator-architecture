@@ -18,12 +18,12 @@ public final class Main {
         // setup ports
         final Ports ports = new Ports();
         final PortAbstractFactory factory = PortAbstractFactoryProducer.getFactory();
-        ports.addPort("Port1", factory.getReceiverPort(11031, msg -> {
+        ports.registerPort("Port1", factory.getReceiverPort(11031, msg -> {
             LOGGER.info("Port1 got called by other component");
             return Optional.absent();
         }));
-        ports.addPort("Port2", factory.getSynchronousSenderPort("127.0.0.1", 11025));
-        ports.addPort("Port3", factory.getReceiverPort(11033, msg -> {
+        ports.registerPort("Port2", factory.getSynchronousSenderPort("127.0.0.1", 11025));
+        ports.registerPort("Port3", factory.getReceiverPort(11033, msg -> {
             LOGGER.info("Port3 got called by other component");
             return Optional.absent();
         }));

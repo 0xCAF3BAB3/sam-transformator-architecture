@@ -23,11 +23,17 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
 
     public UdpAsynchronousSender(final UdpSenderConfig config) {
         this.config = config;
+        this.callback = msg -> {
+            LOGGER.debug("Default asynchronous-sender-callback got called");
+        };
     }
 
     @Override
     public final void register(final AsynchronousSenderCallback callback) {
         this.callback = callback;
+        if (isConnected()) {
+            udpServer.setCallback(callback);
+        }
     }
 
     @Override

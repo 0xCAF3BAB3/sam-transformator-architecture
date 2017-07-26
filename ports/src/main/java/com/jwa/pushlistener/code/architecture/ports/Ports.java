@@ -25,9 +25,12 @@ public final class Ports {
         this.ports = new LinkedHashMap<>();
     }
 
-    public final void addPort(final String portName, final Port port) throws IllegalArgumentException {
+    public final void registerPort(final String portName, final Port port) throws IllegalArgumentException {
         if (portName == null || portName.isEmpty()) {
             throw new IllegalArgumentException("Passed port-name is invalid");
+        }
+        if (ports.containsKey(portName)) {
+            throw new IllegalArgumentException("There is already a port registered for passed port-name");
         }
         if (port == null) {
             throw new IllegalArgumentException("Passed port is null");
@@ -49,19 +52,6 @@ public final class Ports {
         }
         final AsynchronousSender sender = getAsynchronousSenderByName(portName);
         sender.register(callback);
-    }
-
-    public final void connectSender(final String portName) throws IllegalArgumentException, PortException {
-        final Sender sender = getSenderByName(portName);
-        sender.connect();
-    }
-
-    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortException {
-        if (msg == null) {
-            throw new IllegalArgumentException("Passed message is null");
-        }
-        final Sender sender = getSenderByName(portName);
-        return sender.execute(msg);
     }
 
     public final void start() throws PortException {
@@ -86,7 +76,20 @@ public final class Ports {
         LOGGER.info("Shutdown completed");
     }
 
-    private Port getPortByName(String portName) throws IllegalArgumentException {
+    public final void connectSender(final String portName) throws IllegalArgumentException, PortException {
+        final Sender sender = getSenderByName(portName);
+        sender.connect();
+    }
+
+    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortException {
+        if (msg == null) {
+            throw new IllegalArgumentException("Passed message is null");
+        }
+        final Sender sender = getSenderByName(portName);
+        return sender.execute(msg);
+    }
+
+    private Port getPortByName(final String portName) throws IllegalArgumentException {
         final Port port = ports.get(portName);
         if (port == null) {
             throw new IllegalArgumentException("Passed port not found");
@@ -94,7 +97,7 @@ public final class Ports {
         return port;
     }
 
-    private Sender getSenderByName(String portName) throws IllegalArgumentException {
+    private Sender getSenderByName(final String portName) throws IllegalArgumentException {
         final Port port = getPortByName(portName);
         if (port instanceof Sender) {
              return (Sender) port;
@@ -103,7 +106,7 @@ public final class Ports {
         }
     }
 
-    private AsynchronousSender getAsynchronousSenderByName(String portName) throws IllegalArgumentException {
+    private AsynchronousSender getAsynchronousSenderByName(final String portName) throws IllegalArgumentException {
         final Port port = getPortByName(portName);
         if (port instanceof AsynchronousSender) {
             return (AsynchronousSender) port;
@@ -112,7 +115,7 @@ public final class Ports {
         }
     }
 
-    private Receiver getReceiverByName(String portName) throws IllegalArgumentException {
+    private Receiver getReceiverByName(final String portName) throws IllegalArgumentException {
         final Port port = getPortByName(portName);
         if (port instanceof Receiver) {
             return (Receiver) port;

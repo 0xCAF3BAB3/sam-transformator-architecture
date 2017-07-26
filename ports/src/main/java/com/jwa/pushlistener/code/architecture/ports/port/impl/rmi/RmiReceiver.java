@@ -25,9 +25,14 @@ public final class RmiReceiver implements Receiver {
     private final RmiReceiverConfig config;
     private ReceiverHandler handler;
     private RMIServerRunnable rmiServerRunnable;
+    private boolean started;
 
     public RmiReceiver(final RmiReceiverConfig config) {
         this.config = config;
+        this.handler = msg -> {
+            LOGGER.debug("Default receiver-handler got called");
+            return Optional.absent();
+        };
     }
 
     @Override
@@ -37,18 +42,30 @@ public final class RmiReceiver implements Receiver {
 
     @Override
     public final void start() throws PortException {
+        if (isStarted()) {
+            throw new PortException("Already started");
+        }
         rmiServerRunnable = new RMIServerRunnable();
         final Thread t = new Thread(rmiServerRunnable, "RmiReceiver{portRegistry=" + config.getPortRegistry() + "}");
         t.start();
+        started = true;
         LOGGER.info("RmiReceiver started");
     }
 
     @Override
+    public boolean isStarted() {
+        return started;
+    }
+
+    @Override
     public final void shutdown() {
-        rmiServerRunnable.shutdown();
-        LOGGER.info("RmiReceiver{portRegistry=" + config.getPortRegistry() + ", nameRemoteobjectRegistryLookup='" +
-                config.getNameRemoteobjectRegistryLookup() + "'} was shutdown"
-        );
+        if (isStarted()) {
+            rmiServerRunnable.shutdown();
+            started = false;
+            LOGGER.info("RmiReceiver{portRegistry=" + config.getPortRegistry() + ", nameRemoteobjectRegistryLookup='" +
+                    config.getNameRemoteobjectRegistryLookup() + "'} was shutdown"
+            );
+        }
     }
 
     private final class RMIServerRunnable implements Runnable {
