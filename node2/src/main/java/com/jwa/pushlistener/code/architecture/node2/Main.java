@@ -6,8 +6,8 @@ import com.jwa.pushlistener.code.architecture.messagemodel.BMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.EMessage;
 import com.jwa.pushlistener.code.architecture.ports.Ports;
 import com.jwa.pushlistener.code.architecture.ports.PortsException;
-import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactory;
-import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactoryProducer;
+import com.jwa.pushlistener.code.architecture.ports.portfactory.factory.AbstractPortFactory;
+import com.jwa.pushlistener.code.architecture.ports.portfactory.factory.AbstractPortFactoryProducer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public final class Main {
     public static void main(final String[] args) throws PortsException {
         // setup ports
         final Ports ports = new Ports();
-        final PortAbstractFactory factory = PortAbstractFactoryProducer.getFactory();
+        final AbstractPortFactory factory = AbstractPortFactoryProducer.getFactory();
         ports.setPort("Port1", factory.getReceiverPort(11021, msg -> {
             LOGGER.info("Port1 got called by other component");
             return Optional.absent();

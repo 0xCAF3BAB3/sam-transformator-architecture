@@ -7,8 +7,8 @@ import com.jwa.pushlistener.code.architecture.messagemodel.CMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.DMessage;
 import com.jwa.pushlistener.code.architecture.ports.Ports;
 import com.jwa.pushlistener.code.architecture.ports.PortsException;
-import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactory;
-import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactoryProducer;
+import com.jwa.pushlistener.code.architecture.ports.portfactory.factory.AbstractPortFactory;
+import com.jwa.pushlistener.code.architecture.ports.portfactory.factory.AbstractPortFactoryProducer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public final class Main {
     public static void main(final String[] args) throws PortsException {
         // setup ports
         final Ports ports = new Ports();
-        final PortAbstractFactory factory = PortAbstractFactoryProducer.getFactory();
+        final AbstractPortFactory factory = AbstractPortFactoryProducer.getFactory();
         ports.setPort("Port1", factory.getSynchronousSenderPort("127.0.0.1", 11021));
         ports.setPort("Port2", factory.getReceiverPort(11012, msg -> {
             LOGGER.info("Port2 got called by other component");
