@@ -14,7 +14,7 @@ public final class UdpPortFactory extends PortAbstractFactory {
     public final Port getReceiverPort(final int port, final ReceiverHandler handler) {
         final UdpReceiverConfig config = new UdpReceiverConfig(port);
         final UdpReceiver receiver = new UdpReceiver(config);
-        receiver.register(handler);
+        receiver.setHandler(handler);
         return receiver;
     }
 
@@ -28,7 +28,7 @@ public final class UdpPortFactory extends PortAbstractFactory {
     public final Port getAsynchronousSenderPort(final String hostname, final int port, final AsynchronousSenderCallback callback) {
         final UdpSenderConfig config = new UdpSenderConfig(hostname, port);
         final UdpAsynchronousSender sender = new UdpAsynchronousSender(config);
-        sender.register(callback);
+        sender.setCallback(callback);
         return sender;
     }
 }

@@ -36,7 +36,7 @@ public final class RmiReceiver implements Receiver {
     }
 
     @Override
-    public final void register(final ReceiverHandler handler) {
+    public final void setHandler(final ReceiverHandler handler) {
         this.handler = handler;
     }
 

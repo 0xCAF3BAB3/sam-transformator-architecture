@@ -2,10 +2,10 @@ package com.jwa.pushlistener.code.architecture.ports.port;
 
 public interface Receiver extends Port {
     /**
-     * If no handler is registered, a default-handler gets registered (which only logs the call).
+     * If no handler is set, a default-handler gets set (which only logs the call).
      * @param handler must not be null
      */
-    void register(final ReceiverHandler handler);
+    void setHandler(final ReceiverHandler handler);
 
     /**
      *

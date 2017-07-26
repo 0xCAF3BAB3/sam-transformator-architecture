@@ -29,7 +29,7 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
     }
 
     @Override
-    public final void register(final AsynchronousSenderCallback callback) {
+    public final void setCallback(final AsynchronousSenderCallback callback) {
         this.callback = callback;
         if (isConnected()) {
             udpServer.setCallback(callback);

@@ -38,20 +38,20 @@ public final class Ports {
         ports.put(portName, port);
     }
 
-    public final void registerReceiverHandler(final String portName, final ReceiverHandler handler) throws IllegalArgumentException {
+    public final void setReceiverHandler(final String portName, final ReceiverHandler handler) throws IllegalArgumentException {
         if (handler == null) {
             throw new IllegalArgumentException("Passed handler is null");
         }
         final Receiver receiver = getReceiverByName(portName);
-        receiver.register(handler);
+        receiver.setHandler(handler);
     }
 
-    public final void registerAsynchronousSenderCallback(final String portName, final AsynchronousSenderCallback callback) throws IllegalArgumentException {
+    public final void setAsynchronousSenderCallback(final String portName, final AsynchronousSenderCallback callback) throws IllegalArgumentException {
         if (callback == null) {
             throw new IllegalArgumentException("Passed callback is null");
         }
         final AsynchronousSender sender = getAsynchronousSenderByName(portName);
-        sender.register(callback);
+        sender.setCallback(callback);
     }
 
     public final void start() throws PortException {

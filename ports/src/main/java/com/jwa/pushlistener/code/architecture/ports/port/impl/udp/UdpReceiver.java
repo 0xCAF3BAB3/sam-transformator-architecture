@@ -26,7 +26,7 @@ public final class UdpReceiver implements Receiver {
     }
 
     @Override
-    public final void register(final ReceiverHandler handler) {
+    public final void setHandler(final ReceiverHandler handler) {
         this.handler = handler;
         if (isStarted()) {
             udpServer.setHandler(handler);

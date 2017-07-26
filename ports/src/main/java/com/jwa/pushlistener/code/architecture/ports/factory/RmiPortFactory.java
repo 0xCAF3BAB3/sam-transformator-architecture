@@ -13,7 +13,7 @@ public final class RmiPortFactory extends PortAbstractFactory {
     public final Port getReceiverPort(final int port, final ReceiverHandler handler) {
         final RmiReceiverConfig config = new RmiReceiverConfig(port);
         final RmiReceiver receiver = new RmiReceiver(config);
-        receiver.register(handler);
+        receiver.setHandler(handler);
         return receiver;
     }
 
