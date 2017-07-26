@@ -6,9 +6,9 @@ import com.jwa.pushlistener.code.architecture.messagemodel.AMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.CMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.DMessage;
 import com.jwa.pushlistener.code.architecture.ports.Ports;
+import com.jwa.pushlistener.code.architecture.ports.PortsException;
 import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactory;
 import com.jwa.pushlistener.code.architecture.ports.factory.PortAbstractFactoryProducer;
-import com.jwa.pushlistener.code.architecture.ports.port.PortException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +16,18 @@ import org.slf4j.LoggerFactory;
 public final class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(final String[] args) throws PortException {
+    public static void main(final String[] args) throws PortsException {
         // setup ports
         final Ports ports = new Ports();
         final PortAbstractFactory factory = PortAbstractFactoryProducer.getFactory();
-        ports.registerPort("Port1", factory.getSynchronousSenderPort("127.0.0.1", 11021));
-        ports.registerPort("Port2", factory.getReceiverPort(11012, msg -> {
+        ports.setPort("Port1", factory.getSynchronousSenderPort("127.0.0.1", 11021));
+        ports.setPort("Port2", factory.getReceiverPort(11012, msg -> {
             LOGGER.info("Port2 got called by other component");
             return Optional.absent();
         }));
-        ports.registerPort("Port3", factory.getSynchronousSenderPort("127.0.0.1", 11023));
-        ports.registerPort("Port4", factory.getSynchronousSenderPort("127.0.0.1", 11033));
-        ports.start();
+        ports.setPort("Port3", factory.getSynchronousSenderPort("127.0.0.1", 11023));
+        ports.setPort("Port4", factory.getSynchronousSenderPort("127.0.0.1", 11033));
+        ports.startReceiverPorts();
 
         try {
             Thread.sleep(20 * 1000);
@@ -50,6 +50,6 @@ public final class Main {
             Thread.currentThread().interrupt();
         }
 
-        ports.shutdown();
+        ports.stopPorts();
     }
 }

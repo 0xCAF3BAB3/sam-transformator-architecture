@@ -14,6 +14,7 @@ import com.jwa.pushlistener.code.architecture.ports.port.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,12 +26,9 @@ public final class Ports {
         this.ports = new LinkedHashMap<>();
     }
 
-    public final void registerPort(final String portName, final Port port) throws IllegalArgumentException {
+    public final void setPort(final String portName, final Port port) throws IllegalArgumentException {
         if (portName == null || portName.isEmpty()) {
             throw new IllegalArgumentException("Passed port-name is invalid");
-        }
-        if (ports.containsKey(portName)) {
-            throw new IllegalArgumentException("There is already a port registered for passed port-name");
         }
         if (port == null) {
             throw new IllegalArgumentException("Passed port is null");
@@ -54,39 +52,64 @@ public final class Ports {
         sender.setCallback(callback);
     }
 
-    public final void start() throws PortException {
-        LOGGER.info("Starting ...");
-        for(Port port : ports.values()) {
-            if (port instanceof Receiver) {
-                ((Receiver) port).start();
+    public final void startReceiverPort(final String portName) throws PortsException {
+        final Receiver receiver = getReceiverByName(portName);
+        if (!receiver.isStarted()) {
+            try {
+                receiver.start();
+            } catch (PortException e) {
+                throw new PortsException("Starting receiver-port '" + portName + "' failed: " + e.getMessage(), e);
             }
         }
-        LOGGER.info("Starting completed");
     }
 
-    public final void shutdown() {
-        LOGGER.info("Shutdown ...");
-        for(final Port port : ports.values()) {
-            if (port instanceof Receiver) {
-                ((Receiver) port).shutdown();
-            } else if (port instanceof Sender) {
-                ((Sender) port).disconnect();
+    public final void startReceiverPorts() throws PortsException {
+        for(String receiverPortName : getReceivers().keySet()) {
+            startReceiverPort(receiverPortName);
+        }
+    }
+
+    public final void stopReceiverPort(final String portName) {
+        final Receiver receiver = getReceiverByName(portName);
+        if (receiver.isStarted()) {
+            receiver.shutdown();
+        }
+    }
+
+    public final void stopReceiverPorts() {
+        for(String receiverPortName : getReceivers().keySet()) {
+            stopReceiverPort(receiverPortName);
+        }
+    }
+
+    public final void stopPorts() {
+        stopReceiverPorts();
+        for(Sender sender : getSenders().values()) {
+            if (sender.isConnected()) {
+                sender.disconnect();
             }
         }
-        LOGGER.info("Shutdown completed");
     }
 
-    public final void connectSender(final String portName) throws IllegalArgumentException, PortException {
+    public final void connectSender(final String portName) throws IllegalArgumentException, PortsException {
         final Sender sender = getSenderByName(portName);
-        sender.connect();
+        try {
+            sender.connect();
+        } catch (PortException e) {
+            throw new PortsException("Connecting sender-port '" + portName + "' failed: " + e.getMessage(), e);
+        }
     }
 
-    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortException {
+    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortsException {
         if (msg == null) {
             throw new IllegalArgumentException("Passed message is null");
         }
         final Sender sender = getSenderByName(portName);
-        return sender.execute(msg);
+        try {
+            return sender.execute(msg);
+        } catch (PortException e) {
+            throw new PortsException("Executing sender-port '" + portName + "' failed: " + e.getMessage(), e);
+        }
     }
 
     private Port getPortByName(final String portName) throws IllegalArgumentException {
@@ -122,5 +145,25 @@ public final class Ports {
         } else {
             throw new IllegalArgumentException("Passed port is not from type Receiver");
         }
+    }
+
+    private Map<String, Receiver> getReceivers() {
+        Map<String, Receiver> receivers = new LinkedHashMap<>();
+        for(Map.Entry<String, Port> port : ports.entrySet()) {
+            if (port.getValue() instanceof Receiver) {
+                receivers.put(port.getKey(), (Receiver) port.getValue());
+            }
+        }
+        return Collections.unmodifiableMap(receivers);
+    }
+
+    private Map<String, Sender> getSenders() {
+        Map<String, Sender> senders = new LinkedHashMap<>();
+        for(Map.Entry<String, Port> port : ports.entrySet()) {
+            if (port.getValue() instanceof Sender) {
+                senders.put(port.getKey(), (Sender) port.getValue());
+            }
+        }
+        return Collections.unmodifiableMap(senders);
     }
 }
