@@ -1,6 +1,6 @@
 package com.jwa.pushlistener.code.architecture.ports.port.impl.udp;
 
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
+import com.jwa.pushlistener.code.architecture.ports.port.PortException;
 import com.jwa.pushlistener.code.architecture.ports.port.ReceiverHandler;
 import com.jwa.pushlistener.code.architecture.ports.port.Receiver;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.udp.config.UdpReceiverConfig;
@@ -24,7 +24,7 @@ public final class UdpReceiver implements Receiver {
     }
 
     @Override
-    public final void start() throws PortsException {
+    public final void start() throws PortException {
         udpServer = new UdpServer(config.getPort(), handler);
         udpServer.start();
         LOGGER.info("UdpReceiver started");

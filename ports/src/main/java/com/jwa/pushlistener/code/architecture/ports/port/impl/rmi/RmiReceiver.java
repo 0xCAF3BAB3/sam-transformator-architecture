@@ -3,7 +3,7 @@ package com.jwa.pushlistener.code.architecture.ports.port.impl.rmi;
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
+import com.jwa.pushlistener.code.architecture.ports.port.PortException;
 import com.jwa.pushlistener.code.architecture.ports.port.ReceiverHandler;
 import com.jwa.pushlistener.code.architecture.ports.port.Receiver;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.rmi.config.RmiReceiverConfig;
@@ -36,7 +36,7 @@ public final class RmiReceiver implements Receiver {
     }
 
     @Override
-    public final void start() throws PortsException {
+    public final void start() throws PortException {
         rmiServerRunnable = new RMIServerRunnable();
         final Thread t = new Thread(rmiServerRunnable, "RmiReceiver{portRegistry=" + config.getPortRegistry() + "}");
         t.start();

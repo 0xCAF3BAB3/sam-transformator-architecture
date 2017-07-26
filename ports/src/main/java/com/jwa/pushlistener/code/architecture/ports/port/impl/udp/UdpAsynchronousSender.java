@@ -3,7 +3,7 @@ package com.jwa.pushlistener.code.architecture.ports.port.impl.udp;
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
+import com.jwa.pushlistener.code.architecture.ports.port.PortException;
 import com.jwa.pushlistener.code.architecture.ports.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.ports.port.AsynchronousSenderCallback;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.udp.config.UdpSenderConfig;
@@ -19,6 +19,7 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
     private final UdpSenderConfig config;
     private AsynchronousSenderCallback callback;
     private UdpServer udpServer;
+    private boolean connected;
 
     public UdpAsynchronousSender(final UdpSenderConfig config) {
         this.config = config;
@@ -30,21 +31,30 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
     }
 
     @Override
-    public final void connect() throws PortsException {
+    public final void connect() throws PortException {
+        if (isConnected()) {
+            throw new PortException("Already connected");
+        }
         udpServer = new UdpServer(config.getPort(), callback);
         udpServer.start();
+        connected = true;
     }
 
     @Override
-    public final Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, PortsException {
-        if (msg == null) {
-            throw new IllegalArgumentException();
+    public final boolean isConnected() {
+        return connected;
+    }
+
+    @Override
+    public final Optional<MessageModel> execute(final MessageModel msg) throws PortException {
+        if (!isConnected()) {
+            throw new PortException("Not connected");
         }
         try {
             final InetSocketAddress recipient = new InetSocketAddress(config.getHostname(), config.getPort());
             UdpUtils.send(msg, recipient, udpServer.getDatagramSocket());
         } catch (IOException e) {
-            throw new PortsException("Message sending failed: " + e.getMessage(), e);
+            throw new PortException("Message sending failed: " + e.getMessage(), e);
         }
         LOGGER.info("Message was executed");
         return Optional.absent();
@@ -53,5 +63,6 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
     @Override
     public final void disconnect() {
         udpServer.shutdown();
+        connected = false;
     }
 }

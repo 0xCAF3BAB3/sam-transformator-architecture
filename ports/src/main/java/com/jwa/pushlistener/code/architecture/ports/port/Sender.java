@@ -3,19 +3,23 @@ package com.jwa.pushlistener.code.architecture.ports.port;
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
 
 public interface Sender extends Port {
-    void connect() throws PortsException;
+    /**
+     *
+     * @throws PortException if connection can't be established or already connected
+     */
+    void connect() throws PortException;
+
+    boolean isConnected();
 
     /**
      *
      * @param msg must not be null
      * @return Optional<MessageModel> if communication is synchronous, Optional.empty() if communication is asynchronous
-     * @throws IllegalArgumentException if msg is null
-     * @throws PortsException
+     * @throws PortException if a connection problem occured or not connected
      */
-    Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, PortsException;
+    Optional<MessageModel> execute(final MessageModel msg) throws PortException;
 
     void disconnect();
 }

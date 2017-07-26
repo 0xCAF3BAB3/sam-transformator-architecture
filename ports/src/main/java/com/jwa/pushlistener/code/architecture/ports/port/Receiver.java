@@ -1,9 +1,13 @@
 package com.jwa.pushlistener.code.architecture.ports.port;
 
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
-
 public interface Receiver extends Port {
+    /**
+     *
+     * @param handler must not be null
+     */
     void register(final ReceiverHandler handler);
-    void start() throws PortsException;
+
+    void start() throws PortException;
+
     void shutdown();
 }

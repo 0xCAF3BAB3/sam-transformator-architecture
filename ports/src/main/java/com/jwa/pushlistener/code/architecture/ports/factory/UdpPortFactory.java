@@ -9,7 +9,7 @@ import com.jwa.pushlistener.code.architecture.ports.port.impl.udp.UdpSynchronous
 import com.jwa.pushlistener.code.architecture.ports.port.impl.udp.config.UdpReceiverConfig;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.udp.config.UdpSenderConfig;
 
-public final class UdpPortFactory extends PortFactory {
+public final class UdpPortFactory extends PortAbstractFactory {
     @Override
     public final Port getReceiverPort(final int port, final ReceiverHandler handler) {
         final UdpReceiverConfig config = new UdpReceiverConfig(port);

@@ -3,7 +3,7 @@ package com.jwa.pushlistener.code.architecture.ports.port.impl.rmi;
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
-import com.jwa.pushlistener.code.architecture.ports.PortsException;
+import com.jwa.pushlistener.code.architecture.ports.port.PortException;
 import com.jwa.pushlistener.code.architecture.ports.port.SynchronousSender;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.rmi.config.RmiSenderConfig;
 
@@ -19,19 +19,24 @@ public final class RmiSynchronousSender implements SynchronousSender {
     private static final Logger LOGGER = LoggerFactory.getLogger(RmiSynchronousSender.class);
     private final RmiSenderConfig config;
     private RmiInterface remoteInterface;
+    private boolean connected;
 
     public RmiSynchronousSender(final RmiSenderConfig config) {
         this.config = config;
     }
 
     @Override
-    public final void connect() throws PortsException {
+    public final void connect() throws PortException {
+        if (isConnected()) {
+            throw new PortException("Already connected");
+        }
         try {
             final Registry registry = LocateRegistry.getRegistry(config.getHostname(), config.getPortRegistry());
             remoteInterface = (RmiInterface) registry.lookup(config.getNameRemoteobjectRegistryLookup());
         } catch (RemoteException | NotBoundException e) {
-            throw new PortsException("Registry lookup failed: " + e.getMessage(), e);
+            throw new PortException("Registry lookup failed: " + e.getMessage(), e);
         }
+        connected = true;
         LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
                 " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
                 "' is now established"
@@ -39,15 +44,20 @@ public final class RmiSynchronousSender implements SynchronousSender {
     }
 
     @Override
-    public final Optional<MessageModel> execute(final MessageModel msg) throws IllegalArgumentException, PortsException {
-        if (msg == null) {
-            throw new IllegalArgumentException();
+    public final boolean isConnected() {
+        return connected;
+    }
+
+    @Override
+    public final Optional<MessageModel> execute(final MessageModel msg) throws PortException {
+        if (!isConnected()) {
+            throw new PortException("Not connected");
         }
         final Optional<MessageModel> response;
         try {
             response = remoteInterface.execute(msg);
         } catch (RemoteException e) {
-            throw new PortsException("Message executing failed: " + e.getMessage(), e);
+            throw new PortException("Message executing failed: " + e.getMessage(), e);
         }
         LOGGER.info("Message was executed");
         LOGGER.info("Message response received");
@@ -57,6 +67,7 @@ public final class RmiSynchronousSender implements SynchronousSender {
     @Override
     public final void disconnect() {
         // Connection between RMI client and server is implicit and closes automatically after a short idle period of time.
+        connected = false;
         LOGGER.info("Connection to RMI server '" + config.getHostname() + "' on registry-port " + config.getPortRegistry() +
                 " and registry-remoteobject-name '" + config.getNameRemoteobjectRegistryLookup() +
                 "' was closed"

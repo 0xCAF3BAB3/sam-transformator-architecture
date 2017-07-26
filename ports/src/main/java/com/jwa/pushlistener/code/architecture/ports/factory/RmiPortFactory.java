@@ -8,7 +8,7 @@ import com.jwa.pushlistener.code.architecture.ports.port.impl.rmi.RmiSynchronous
 import com.jwa.pushlistener.code.architecture.ports.port.impl.rmi.config.RmiReceiverConfig;
 import com.jwa.pushlistener.code.architecture.ports.port.impl.rmi.config.RmiSenderConfig;
 
-public final class RmiPortFactory extends PortFactory {
+public final class RmiPortFactory extends PortAbstractFactory {
     @Override
     public final Port getReceiverPort(final int port, final ReceiverHandler handler) {
         final RmiReceiverConfig config = new RmiReceiverConfig(port);
