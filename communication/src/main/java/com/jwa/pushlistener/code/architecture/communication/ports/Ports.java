@@ -13,15 +13,11 @@ import com.jwa.pushlistener.code.architecture.communication.port.Receiver;
 import com.jwa.pushlistener.code.architecture.communication.port.ReceiverHandler;
 import com.jwa.pushlistener.code.architecture.communication.port.Sender;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class Ports {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Ports.class);
     private final Map<String, Port> ports;
 
     public Ports() {
