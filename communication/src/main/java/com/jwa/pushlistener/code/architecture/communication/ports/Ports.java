@@ -1,7 +1,9 @@
-package com.jwa.pushlistener.code.architecture.communication;
+package com.jwa.pushlistener.code.architecture.communication.ports;
 
 import com.google.common.base.Optional;
 
+import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactoryProducer;
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
@@ -26,12 +28,18 @@ public final class Ports {
         this.ports = new LinkedHashMap<>();
     }
 
-    public final void setPort(final String portName, final Port port) throws IllegalArgumentException {
+    public final void setPort(final String portName, final PortConfig config) throws IllegalArgumentException {
         if (portName == null || portName.isEmpty()) {
             throw new IllegalArgumentException("Passed port-name is invalid");
         }
-        if (port == null) {
-            throw new IllegalArgumentException("Passed port is null");
+        if (config == null) {
+            throw new IllegalArgumentException("Passed port-configuration is null");
+        }
+        final Port port;
+        try {
+            port = PortFactoryProducer.createPort(config);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Passed port-configuration is invalid: " + e.getMessage(), e);
         }
         ports.put(portName, port);
     }

@@ -2,13 +2,12 @@ package com.jwa.pushlistener.code.architecture.component1;
 
 import com.google.common.base.Optional;
 
+import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfigBuilder;
 import com.jwa.pushlistener.code.architecture.messagemodel.AMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.CMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.DMessage;
-import com.jwa.pushlistener.code.architecture.communication.Ports;
-import com.jwa.pushlistener.code.architecture.communication.PortsException;
-import com.jwa.pushlistener.code.architecture.communication.portfactory.factory.AbstractPortFactory;
-import com.jwa.pushlistener.code.architecture.communication.portfactory.factory.AbstractPortFactoryProducer;
+import com.jwa.pushlistener.code.architecture.communication.ports.Ports;
+import com.jwa.pushlistener.code.architecture.communication.ports.PortsException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +16,44 @@ public final class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(final String[] args) throws PortsException {
-        // setup communication
         final Ports ports = new Ports();
-        final AbstractPortFactory factory = AbstractPortFactoryProducer.getFactory();
-        ports.setPort("Port1", factory.getSynchronousSenderPort("127.0.0.1", 11021));
-        ports.setPort("Port2", factory.getReceiverPort(11012, msg -> {
+
+        // init ports
+        ports.setPort("Port1",
+                new PortConfigBuilder()
+                        .setProperty("PortStyle", "Rmi")
+                        .setProperty("PortType", "Sender/SynchronousSender")
+                        .setProperty("PortProperties.Rmi.hostname", "127.0.0.1")
+                        .setProperty("PortProperties.Rmi.portRegistry", "11021")
+                        .build()
+        );
+        ports.setPort("Port2",
+                new PortConfigBuilder()
+                        .setProperty("PortStyle", "Rmi")
+                        .setProperty("PortType", "Receiver")
+                        .setProperty("PortProperties.Rmi.portRegistry", "11012")
+                        .build()
+        );
+        ports.setReceiverHandler("Port2", msg -> {
             LOGGER.info("Port2 got called by other component");
             return Optional.absent();
-        }));
-        ports.setPort("Port3", factory.getSynchronousSenderPort("127.0.0.1", 11023));
-        ports.setPort("Port4", factory.getSynchronousSenderPort("127.0.0.1", 11033));
+        });
+        ports.setPort("Port3",
+                new PortConfigBuilder()
+                        .setProperty("PortStyle", "Rmi")
+                        .setProperty("PortType", "Sender/SynchronousSender")
+                        .setProperty("PortProperties.Rmi.hostname", "127.0.0.1")
+                        .setProperty("PortProperties.Rmi.portRegistry", "11023")
+                        .build()
+        );
+        ports.setPort("Port4",
+                new PortConfigBuilder()
+                        .setProperty("PortStyle", "Rmi")
+                        .setProperty("PortType", "Sender/SynchronousSender")
+                        .setProperty("PortProperties.Rmi.hostname", "127.0.0.1")
+                        .setProperty("PortProperties.Rmi.portRegistry", "11033")
+                        .build()
+        );
         ports.startReceiverPorts();
 
         try {
