@@ -8,7 +8,7 @@
     <name>PushListener-Code-Architecture</name>
     <modules>
         <module>messagemodel</module>
-        <module>ports</module>
+        <module>communication</module>
         <module>component1</module>
         <module>component2</module>
         <module>component3</module>
