@@ -20,16 +20,16 @@ public final class PortConfig {
         return value;
     }
 
-    public final String getPropertyValue(final String propertyKey) throws IllegalArgumentException {
-        return getValue("PortProperties." + propertyKey);
+    public final String getParameterValue(final String parameterKey) throws IllegalArgumentException {
+        return getValue("PortParameters." + parameterKey);
     }
 
-    public final int getPropertyValueInt(final String propertyKey) throws IllegalArgumentException {
+    public final int getParameterValueInt(final String parameterKey) throws IllegalArgumentException {
         final int value;
         try {
-            value = Integer.parseInt(getPropertyValue(propertyKey));
+            value = Integer.parseInt(getParameterValue(parameterKey));
         } catch (NumberFormatException e) {
-            throw PortConfig.generateIllegalValueException(propertyKey);
+            throw PortConfig.generateIllegalValueException(parameterKey);
         }
         return value;
     }

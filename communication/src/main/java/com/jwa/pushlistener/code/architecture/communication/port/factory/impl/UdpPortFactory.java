@@ -10,7 +10,7 @@ import com.jwa.pushlistener.code.architecture.communication.port.impl.udp.config
 import com.jwa.pushlistener.code.architecture.communication.port.impl.udp.config.UdpSenderConfig;
 
 public final class UdpPortFactory extends AbstractPortFactory {
-    private static final String PROPERTY_PREFIX = "Udp.";
+    private static final String PARAMETER_PREFIX = "Udp.";
 
     @Override
     public final Port createPort(final PortConfig config) throws IllegalArgumentException {
@@ -28,21 +28,21 @@ public final class UdpPortFactory extends AbstractPortFactory {
     }
 
     private UdpReceiver createReceiverPort(final PortConfig config) throws IllegalArgumentException {
-        final int port = config.getPropertyValueInt(PROPERTY_PREFIX + "port");
+        final int port = config.getParameterValueInt(PARAMETER_PREFIX + "port");
         final UdpReceiverConfig receiverConfig = new UdpReceiverConfig(port);
         return new UdpReceiver(receiverConfig);
     }
 
     private UdpSynchronousSender createSynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPropertyValue(PROPERTY_PREFIX + "hostname");
-        final int port = config.getPropertyValueInt(PROPERTY_PREFIX + "port");
+        final String hostname = config.getParameterValue(PARAMETER_PREFIX + "hostname");
+        final int port = config.getParameterValueInt(PARAMETER_PREFIX + "port");
         final UdpSenderConfig senderConfig = new UdpSenderConfig(hostname, port);
         return new UdpSynchronousSender(senderConfig);
     }
 
     private UdpAsynchronousSender createAsynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPropertyValue(PROPERTY_PREFIX + "hostname");
-        final int port = config.getPropertyValueInt(PROPERTY_PREFIX + "port");
+        final String hostname = config.getParameterValue(PARAMETER_PREFIX + "hostname");
+        final int port = config.getParameterValueInt(PARAMETER_PREFIX + "port");
         final UdpSenderConfig senderConfig = new UdpSenderConfig(hostname, port);
         return new UdpAsynchronousSender(senderConfig);
     }

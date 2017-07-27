@@ -9,7 +9,7 @@ import com.jwa.pushlistener.code.architecture.communication.port.impl.rmi.config
 import com.jwa.pushlistener.code.architecture.communication.port.impl.rmi.config.RmiSenderConfig;
 
 public final class RmiPortFactory extends AbstractPortFactory {
-    private static final String PROPERTY_PREFIX = "Rmi.";
+    private static final String PARAMETER_PREFIX = "Rmi.";
 
     @Override
     public final Port createPort(final PortConfig config) throws IllegalArgumentException {
@@ -25,14 +25,14 @@ public final class RmiPortFactory extends AbstractPortFactory {
     }
 
     private RmiReceiver createReceiverPort(final PortConfig config) throws IllegalArgumentException {
-        final int portRegistry = config.getPropertyValueInt(PROPERTY_PREFIX + "portRegistry");
+        final int portRegistry = config.getParameterValueInt(PARAMETER_PREFIX + "portRegistry");
         final RmiReceiverConfig receiverConfig = new RmiReceiverConfig(portRegistry);
         return new RmiReceiver(receiverConfig);
     }
 
     private RmiSynchronousSender createSynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPropertyValue(PROPERTY_PREFIX + "hostname");
-        final int portRegistry = config.getPropertyValueInt(PROPERTY_PREFIX + "portRegistry");
+        final String hostname = config.getParameterValue(PARAMETER_PREFIX + "hostname");
+        final int portRegistry = config.getParameterValueInt(PARAMETER_PREFIX + "portRegistry");
         final RmiSenderConfig senderConfig = new RmiSenderConfig(hostname, portRegistry);
         return new RmiSynchronousSender(senderConfig);
     }

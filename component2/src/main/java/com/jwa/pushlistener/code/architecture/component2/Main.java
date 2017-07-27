@@ -22,7 +22,7 @@ public final class Main {
                 new PortConfigBuilder()
                         .setProperty("PortStyle", "Rmi")
                         .setProperty("PortType", "Receiver")
-                        .setProperty("PortProperties.Rmi.portRegistry", "11021")
+                        .setProperty("PortParameters.Rmi.portRegistry", "11021")
                         .build()
         );
         ports.setReceiverHandler("Port1", msg -> {
@@ -33,15 +33,15 @@ public final class Main {
                 new PortConfigBuilder()
                         .setProperty("PortStyle", "Rmi")
                         .setProperty("PortType", "Sender/SynchronousSender")
-                        .setProperty("PortProperties.Rmi.hostname", "127.0.0.1")
-                        .setProperty("PortProperties.Rmi.portRegistry", "11012")
+                        .setProperty("PortParameters.Rmi.hostname", "127.0.0.1")
+                        .setProperty("PortParameters.Rmi.portRegistry", "11012")
                         .build()
         );
         ports.setPort("Port3",
                 new PortConfigBuilder()
                         .setProperty("PortStyle", "Rmi")
                         .setProperty("PortType", "Receiver")
-                        .setProperty("PortProperties.Rmi.portRegistry", "11023")
+                        .setProperty("PortParameters.Rmi.portRegistry", "11023")
                         .build()
         );
         ports.setReceiverHandler("Port3", msg -> {
@@ -52,15 +52,15 @@ public final class Main {
                 new PortConfigBuilder()
                         .setProperty("PortStyle", "Rmi")
                         .setProperty("PortType", "Sender/SynchronousSender")
-                        .setProperty("PortProperties.Rmi.hostname", "127.0.0.1")
-                        .setProperty("PortProperties.Rmi.portRegistry", "11031")
+                        .setProperty("PortParameters.Rmi.hostname", "127.0.0.1")
+                        .setProperty("PortParameters.Rmi.portRegistry", "11031")
                         .build()
         );
         ports.setPort("Port5",
                 new PortConfigBuilder()
                         .setProperty("PortStyle", "Rmi")
                         .setProperty("PortType", "Receiver")
-                        .setProperty("PortProperties.Rmi.portRegistry", "11025")
+                        .setProperty("PortParameters.Rmi.portRegistry", "11025")
                         .build()
         );
         ports.setReceiverHandler("Port5", msg -> {
