@@ -9,9 +9,9 @@
     <modules>
         <module>messagemodel</module>
         <module>ports</module>
-        <module>node1</module>
-        <module>node2</module>
-        <module>node3</module>
+        <module>component1</module>
+        <module>component2</module>
+        <module>component3</module>
     </modules>
     <properties>
         <!-- project -->

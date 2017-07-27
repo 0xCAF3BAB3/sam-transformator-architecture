@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.jwa.pushlistener.code</groupId>
+        <artifactId>architecture</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.jwa.pushlistener.code.architecture</groupId>
+    <artifactId>component3</artifactId>
+    <packaging>jar</packaging>
+    <dependencies>
+        <!-- pushlistener -->
+        <dependency>
+            <groupId>com.jwa.pushlistener.code.architecture</groupId>
+            <artifactId>messagemodel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jwa.pushlistener.code.architecture</groupId>
+            <artifactId>ports</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+    <profiles>
+        <profile>
+            <id>node3</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>com.jwa.pushlistener.code.architecture.component3.Main</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
