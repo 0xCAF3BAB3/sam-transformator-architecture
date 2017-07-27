@@ -26,7 +26,7 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>node1</id>
+            <id>component1</id>
             <build>
                 <plugins>
                     <plugin>
