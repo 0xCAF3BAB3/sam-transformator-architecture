@@ -20,9 +20,9 @@ public final class Main {
         // init ports
         ports.setPort("Port1",
                 new PortConfigBuilder()
-                        .setProperty("PortStyle", "Rmi")
-                        .setProperty("PortType", "Receiver")
-                        .setProperty("PortParameters.Rmi.portRegistry", "11021")
+                        .setParameter("PortStyle", "Rmi")
+                        .setParameter("PortType", "Receiver")
+                        .setParameter("PortParameters.Rmi.portRegistry", "11021")
                         .build()
         );
         ports.setReceiverHandler("Port1", msg -> {
@@ -31,17 +31,17 @@ public final class Main {
         });
         ports.setPort("Port2",
                 new PortConfigBuilder()
-                        .setProperty("PortStyle", "Rmi")
-                        .setProperty("PortType", "Sender/SynchronousSender")
-                        .setProperty("PortParameters.Rmi.hostname", "127.0.0.1")
-                        .setProperty("PortParameters.Rmi.portRegistry", "11012")
+                        .setParameter("PortStyle", "Rmi")
+                        .setParameter("PortType", "Sender/SynchronousSender")
+                        .setParameter("PortParameters.Rmi.hostname", "127.0.0.1")
+                        .setParameter("PortParameters.Rmi.portRegistry", "11012")
                         .build()
         );
         ports.setPort("Port3",
                 new PortConfigBuilder()
-                        .setProperty("PortStyle", "Rmi")
-                        .setProperty("PortType", "Receiver")
-                        .setProperty("PortParameters.Rmi.portRegistry", "11023")
+                        .setParameter("PortStyle", "Rmi")
+                        .setParameter("PortType", "Receiver")
+                        .setParameter("PortParameters.Rmi.portRegistry", "11023")
                         .build()
         );
         ports.setReceiverHandler("Port3", msg -> {
@@ -50,17 +50,17 @@ public final class Main {
         });
         ports.setPort("Port4",
                 new PortConfigBuilder()
-                        .setProperty("PortStyle", "Rmi")
-                        .setProperty("PortType", "Sender/SynchronousSender")
-                        .setProperty("PortParameters.Rmi.hostname", "127.0.0.1")
-                        .setProperty("PortParameters.Rmi.portRegistry", "11031")
+                        .setParameter("PortStyle", "Rmi")
+                        .setParameter("PortType", "Sender/SynchronousSender")
+                        .setParameter("PortParameters.Rmi.hostname", "127.0.0.1")
+                        .setParameter("PortParameters.Rmi.portRegistry", "11031")
                         .build()
         );
         ports.setPort("Port5",
                 new PortConfigBuilder()
-                        .setProperty("PortStyle", "Rmi")
-                        .setProperty("PortType", "Receiver")
-                        .setProperty("PortParameters.Rmi.portRegistry", "11025")
+                        .setParameter("PortStyle", "Rmi")
+                        .setParameter("PortType", "Receiver")
+                        .setParameter("PortParameters.Rmi.portRegistry", "11025")
                         .build()
         );
         ports.setReceiverHandler("Port5", msg -> {

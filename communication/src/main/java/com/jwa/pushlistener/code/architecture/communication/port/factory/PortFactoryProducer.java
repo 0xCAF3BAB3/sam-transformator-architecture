@@ -5,15 +5,23 @@ import com.jwa.pushlistener.code.architecture.communication.port.config.PortConf
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.RmiPortFactory;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.UdpPortFactory;
 
-public final class PortFactoryProducer {
-    private static AbstractPortFactory rmiFactory;
-    private static AbstractPortFactory udpFactory;
+public final class PortFactoryProducer implements AbstractPortFactory {
+    private static PortFactoryProducer instance = null;
+    private AbstractPortFactory rmiFactory;
+    private AbstractPortFactory udpFactory;
 
     private PortFactoryProducer() {}
 
-    public static Port createPort(final PortConfig config) throws IllegalArgumentException {
-        final String portStyleKey = "PortStyle";
-        switch (config.getValue(portStyleKey)) {
+    public static PortFactoryProducer getInstance() {
+        if(instance == null) {
+            instance = new PortFactoryProducer();
+        }
+        return instance;
+    }
+
+    public final Port createPort(final PortConfig config) throws IllegalArgumentException {
+        final String portStyleParameterKey = "PortStyle";
+        switch (config.getParameter(portStyleParameterKey)) {
             case "Rmi":
                 if (rmiFactory == null) {
                     rmiFactory = new RmiPortFactory();
@@ -25,7 +33,7 @@ public final class PortFactoryProducer {
                 }
                 return udpFactory.createPort(config);
             default:
-                throw PortConfig.generateNotImplementedException(portStyleKey);
+                throw PortConfig.generateNotImplementedException(portStyleParameterKey);
         }
     }
 }

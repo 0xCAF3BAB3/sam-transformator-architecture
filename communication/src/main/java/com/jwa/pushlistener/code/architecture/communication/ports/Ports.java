@@ -33,7 +33,7 @@ public final class Ports {
         }
         final Port port;
         try {
-            port = PortFactoryProducer.createPort(config);
+            port = PortFactoryProducer.getInstance().createPort(config);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Passed port-configuration is invalid: " + e.getMessage(), e);
         }
