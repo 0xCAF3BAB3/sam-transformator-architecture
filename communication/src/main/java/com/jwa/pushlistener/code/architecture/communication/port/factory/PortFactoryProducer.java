@@ -6,8 +6,8 @@ import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.Rm
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.UdpPortFactory;
 
 public final class PortFactoryProducer {
-    private static RmiPortFactory rmiFactory;
-    private static UdpPortFactory udpFactory;
+    private static AbstractPortFactory rmiFactory;
+    private static AbstractPortFactory udpFactory;
 
     private PortFactoryProducer() {}
 
