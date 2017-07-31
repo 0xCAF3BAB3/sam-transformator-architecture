@@ -27,7 +27,7 @@ public final class PortConfig {
         }
         final String value = parameters.get(key);
         if (value == null || value.isEmpty()) {
-            throw generateIllegalParameterValueException(key);
+            throw generateInvalidParameterValueException(key);
         }
         return value;
     }
@@ -37,7 +37,7 @@ public final class PortConfig {
         try {
             value = Integer.parseInt(getParameter(key));
         } catch (NumberFormatException e) {
-            throw generateIllegalParameterValueException(key);
+            throw generateInvalidParameterValueException(key);
         }
         return value;
     }
@@ -50,7 +50,7 @@ public final class PortConfig {
         return new IllegalArgumentException("No implementation found for type '" + type + "'");
     }
 
-    private static IllegalArgumentException generateIllegalParameterValueException(final String parameterKey) {
+    private static IllegalArgumentException generateInvalidParameterValueException(final String parameterKey) {
         return new IllegalArgumentException("Parameter '" + parameterKey + "' has invalid value");
     }
 }
