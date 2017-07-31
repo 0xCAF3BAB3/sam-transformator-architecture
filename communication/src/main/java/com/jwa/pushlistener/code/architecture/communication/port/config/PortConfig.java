@@ -3,42 +3,54 @@ package com.jwa.pushlistener.code.architecture.communication.port.config;
 import java.util.Map;
 
 public final class PortConfig {
+    private final String style;
+    private final String type;
     private final Map<String, String> parameters;
 
-    PortConfig(final Map<String, String> parameters) {
+    PortConfig(final String style, final String type, final Map<String, String> parameters) {
+        this.style = style;
+        this.type = type;
         this.parameters = parameters;
     }
 
-    public final String getParameter(final String parameterKey) throws IllegalArgumentException {
-        if (!parameters.containsKey(parameterKey)) {
-            throw new IllegalArgumentException("Parameter '" + parameterKey + "' is missing");
+    public final String getStyle() {
+        return style;
+    }
+
+    public final String getType() {
+        return type;
+    }
+
+    public final String getParameter(final String key) throws IllegalArgumentException {
+        if (!parameters.containsKey(key)) {
+            throw new IllegalArgumentException("Parameter '" + key + "' is missing");
         }
-        final String value = parameters.get(parameterKey);
+        final String value = parameters.get(key);
         if (value == null || value.isEmpty()) {
-            throw generateIllegalValueException(parameterKey);
+            throw generateIllegalParameterValueException(key);
         }
         return value;
     }
 
-    public final String getPortParameter(final String portParameterKey) throws IllegalArgumentException {
-        return getParameter("PortParameters." + portParameterKey);
-    }
-
-    public final int getPortParameterInt(final String portParameterKey) throws IllegalArgumentException {
+    public final int getParameterInt(final String key) throws IllegalArgumentException {
         final int value;
         try {
-            value = Integer.parseInt(getPortParameter(portParameterKey));
+            value = Integer.parseInt(getParameter(key));
         } catch (NumberFormatException e) {
-            throw PortConfig.generateIllegalValueException(portParameterKey);
+            throw generateIllegalParameterValueException(key);
         }
         return value;
     }
 
-    public static IllegalArgumentException generateNotImplementedException(final String parameterKey) {
-        return new IllegalArgumentException("No implementation found for parameter '" + parameterKey + "'");
+    public final IllegalArgumentException generateNoImplementationFoundForStyleException() {
+        return new IllegalArgumentException("No implementation found for style '" + style + "'");
     }
 
-    private static IllegalArgumentException generateIllegalValueException(final String parameterKey) {
+    public final IllegalArgumentException generateNoImplementationFoundForTypeException() {
+        return new IllegalArgumentException("No implementation found for type '" + type + "'");
+    }
+
+    private static IllegalArgumentException generateIllegalParameterValueException(final String parameterKey) {
         return new IllegalArgumentException("Parameter '" + parameterKey + "' has invalid value");
     }
 }

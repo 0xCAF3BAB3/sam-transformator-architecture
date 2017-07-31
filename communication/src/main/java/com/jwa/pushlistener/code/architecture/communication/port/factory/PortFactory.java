@@ -15,11 +15,13 @@ public final class PortFactory {
     }
 
     public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {
-        final String portStyleParameterKey = "PortStyle";
-        final String portStyleParameterValue = portConfig.getParameter(portStyleParameterKey);
-        final AbstractPortFactory factory = factoryConfig.getFactory(portStyleParameterValue);
+        if (portConfig == null) {
+            throw new IllegalArgumentException("Passed port-config is null");
+        }
+        final String portStyle = portConfig.getStyle();
+        final AbstractPortFactory factory = factoryConfig.getFactory(portStyle);
         if (factory == null) {
-            throw PortConfig.generateNotImplementedException(portStyleParameterKey);
+            throw portConfig.generateNoImplementationFoundForStyleException();
         }
         return factory.createPort(portConfig);
     }

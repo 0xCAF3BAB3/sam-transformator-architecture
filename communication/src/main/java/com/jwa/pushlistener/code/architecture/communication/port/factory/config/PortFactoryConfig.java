@@ -11,7 +11,7 @@ public final class PortFactoryConfig {
         this.factories = factories;
     }
 
-    public final AbstractPortFactory getFactory(final String name) {
-        return factories.get(name);
+    public final AbstractPortFactory getFactory(final String portStyleName) {
+        return factories.get(portStyleName);
     }
 }

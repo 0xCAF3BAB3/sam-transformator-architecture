@@ -12,8 +12,8 @@ public final class PortFactoryConfigBuilder {
         this.factories = new HashMap<>();
     }
 
-    public final PortFactoryConfigBuilder setFactory(final String name, final AbstractPortFactory instance) {
-        factories.put(name, instance);
+    public final PortFactoryConfigBuilder setFactory(final String portStyleName, final AbstractPortFactory instance) {
+        factories.put(portStyleName, instance);
         return this;
     }
 
