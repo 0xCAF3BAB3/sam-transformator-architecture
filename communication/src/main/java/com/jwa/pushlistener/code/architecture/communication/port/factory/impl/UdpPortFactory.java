@@ -13,36 +13,36 @@ public final class UdpPortFactory implements AbstractPortFactory {
     private static final String PORTPARAMETER_PREFIX = "Udp.";
 
     @Override
-    public final Port createPort(final PortConfig config) throws IllegalArgumentException {
+    public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {
         final String portTypeParameterKey = "PortType";
-        switch (config.getParameter(portTypeParameterKey)) {
+        switch (portConfig.getParameter(portTypeParameterKey)) {
             case "Receiver":
-                return createReceiverPort(config);
+                return createReceiverPort(portConfig);
             case "Sender/SynchronousSender":
-                return createSynchronousSender(config);
+                return createSynchronousSender(portConfig);
             case "Sender/AsynchronousSender":
-                return createAsynchronousSender(config);
+                return createAsynchronousSender(portConfig);
             default:
                 throw PortConfig.generateNotImplementedException(portTypeParameterKey);
         }
     }
 
-    private UdpReceiver createReceiverPort(final PortConfig config) throws IllegalArgumentException {
-        final int port = config.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
+    private UdpReceiver createReceiverPort(final PortConfig portConfig) throws IllegalArgumentException {
+        final int port = portConfig.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
         final UdpReceiverConfig receiverConfig = new UdpReceiverConfig(port);
         return new UdpReceiver(receiverConfig);
     }
 
-    private UdpSynchronousSender createSynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
-        final int port = config.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
+    private UdpSynchronousSender createSynchronousSender(final PortConfig portConfig) throws IllegalArgumentException {
+        final String hostname = portConfig.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
+        final int port = portConfig.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
         final UdpSenderConfig senderConfig = new UdpSenderConfig(hostname, port);
         return new UdpSynchronousSender(senderConfig);
     }
 
-    private UdpAsynchronousSender createAsynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
-        final int port = config.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
+    private UdpAsynchronousSender createAsynchronousSender(final PortConfig portConfig) throws IllegalArgumentException {
+        final String hostname = portConfig.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
+        final int port = portConfig.getPortParameterInt(PORTPARAMETER_PREFIX + "port");
         final UdpSenderConfig senderConfig = new UdpSenderConfig(hostname, port);
         return new UdpAsynchronousSender(senderConfig);
     }

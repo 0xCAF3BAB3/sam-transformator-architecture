@@ -4,5 +4,5 @@ import com.jwa.pushlistener.code.architecture.communication.port.Port;
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
 
 public interface AbstractPortFactory {
-    Port createPort(final PortConfig config) throws IllegalArgumentException;
+    Port createPort(final PortConfig portConfig) throws IllegalArgumentException;
 }

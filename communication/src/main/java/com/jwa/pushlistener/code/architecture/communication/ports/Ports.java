@@ -3,7 +3,10 @@ package com.jwa.pushlistener.code.architecture.communication.ports;
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactoryProducer;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfigBuilder;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.RmiPortFactory;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.UdpPortFactory;
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
@@ -19,21 +22,37 @@ import java.util.Map;
 
 public final class Ports {
     private final Map<String, Port> ports;
+    private final PortFactory portFactory;
 
     public Ports() {
         this.ports = new LinkedHashMap<>();
+        portFactory = new PortFactory(
+                new PortFactoryConfigBuilder()
+                        .setFactory("Rmi", new RmiPortFactory())
+                        .setFactory("Udp", new UdpPortFactory())
+                        .build()
+        );
     }
 
-    public final void setPort(final String portName, final PortConfig config) throws IllegalArgumentException {
+    // for testing
+    Ports(final PortFactory portFactory) throws IllegalArgumentException {
+        this.ports = new LinkedHashMap<>();
+        if (portFactory == null) {
+            throw new IllegalArgumentException("Passed port-factory is null");
+        }
+        this.portFactory = portFactory;
+    }
+
+    public final void setPort(final String portName, final PortConfig portConfig) throws IllegalArgumentException {
         if (portName == null || portName.isEmpty()) {
             throw new IllegalArgumentException("Passed port-name is invalid");
         }
-        if (config == null) {
+        if (portConfig == null) {
             throw new IllegalArgumentException("Passed port-configuration is null");
         }
         final Port port;
         try {
-            port = PortFactoryProducer.getInstance().createPort(config);
+            port = portFactory.createPort(portConfig);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Passed port-configuration is invalid: " + e.getMessage(), e);
         }

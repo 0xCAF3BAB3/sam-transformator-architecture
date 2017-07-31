@@ -12,27 +12,27 @@ public final class RmiPortFactory implements AbstractPortFactory {
     private static final String PORTPARAMETER_PREFIX = "Rmi.";
 
     @Override
-    public final Port createPort(final PortConfig config) throws IllegalArgumentException {
+    public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {
         final String portTypeParameterKey = "PortType";
-        switch (config.getParameter(portTypeParameterKey)) {
+        switch (portConfig.getParameter(portTypeParameterKey)) {
             case "Receiver":
-                return createReceiverPort(config);
+                return createReceiverPort(portConfig);
             case "Sender/SynchronousSender":
-                return createSynchronousSender(config);
+                return createSynchronousSender(portConfig);
             default:
                 throw PortConfig.generateNotImplementedException(portTypeParameterKey);
         }
     }
 
-    private RmiReceiver createReceiverPort(final PortConfig config) throws IllegalArgumentException {
-        final int portRegistry = config.getPortParameterInt(PORTPARAMETER_PREFIX + "portRegistry");
+    private RmiReceiver createReceiverPort(final PortConfig portConfig) throws IllegalArgumentException {
+        final int portRegistry = portConfig.getPortParameterInt(PORTPARAMETER_PREFIX + "portRegistry");
         final RmiReceiverConfig receiverConfig = new RmiReceiverConfig(portRegistry);
         return new RmiReceiver(receiverConfig);
     }
 
-    private RmiSynchronousSender createSynchronousSender(final PortConfig config) throws IllegalArgumentException {
-        final String hostname = config.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
-        final int portRegistry = config.getPortParameterInt(PORTPARAMETER_PREFIX + "portRegistry");
+    private RmiSynchronousSender createSynchronousSender(final PortConfig portConfig) throws IllegalArgumentException {
+        final String hostname = portConfig.getPortParameter(PORTPARAMETER_PREFIX + "hostname");
+        final int portRegistry = portConfig.getPortParameterInt(PORTPARAMETER_PREFIX + "portRegistry");
         final RmiSenderConfig senderConfig = new RmiSenderConfig(hostname, portRegistry);
         return new RmiSynchronousSender(senderConfig);
     }
