@@ -2,11 +2,11 @@ package com.jwa.pushlistener.code.architecture.component1;
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.communication.ports.Ports;
+import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
 import com.jwa.pushlistener.code.architecture.messagemodel.AMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.CMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.DMessage;
-import com.jwa.pushlistener.code.architecture.communication.ports.PortsException;
+import com.jwa.pushlistener.code.architecture.communication.ports.PortsServiceException;
 
 public final class Main {
     public static void main(final String[] args) {
@@ -15,16 +15,16 @@ public final class Main {
         // example usage of CommunicationService
         try {
             final CommunicationService communicationService = CommunicationService.getInstance();
-            final Ports ports = communicationService.getPorts();
+            final PortsService portsService = communicationService.getPortsService();
 
-            ports.setReceiverHandler(CommunicationService.Receivers.PORT2.name(),
+            portsService.setReceiverHandler(CommunicationService.Receivers.PORT2.name(),
                 msg -> {
                     System.out.println("ReceiverHandler on port '" + CommunicationService.Receivers.PORT2.name() + "' got called");
                     return Optional.absent();
                 }
             );
 
-            ports.startReceiverPorts();
+            portsService.startReceiverPorts();
 
             try {
                 Thread.sleep(20 * 1000);
@@ -32,14 +32,14 @@ public final class Main {
                 Thread.currentThread().interrupt();
             }
 
-            ports.connectSender(CommunicationService.Senders.PORT1.name());
-            ports.executeSender(CommunicationService.Senders.PORT1.name(), new AMessage());
+            portsService.connectSender(CommunicationService.Senders.PORT1.name());
+            portsService.executeSender(CommunicationService.Senders.PORT1.name(), new AMessage());
 
-            ports.connectSender(CommunicationService.Senders.PORT3.name());
-            ports.executeSender(CommunicationService.Senders.PORT3.name(), new CMessage());
+            portsService.connectSender(CommunicationService.Senders.PORT3.name());
+            portsService.executeSender(CommunicationService.Senders.PORT3.name(), new CMessage());
 
-            ports.connectSender(CommunicationService.Senders.PORT4.name());
-            ports.executeSender(CommunicationService.Senders.PORT4.name(), new DMessage());
+            portsService.connectSender(CommunicationService.Senders.PORT4.name());
+            portsService.executeSender(CommunicationService.Senders.PORT4.name(), new DMessage());
 
             try {
                 Thread.sleep(20 * 1000);
@@ -47,8 +47,8 @@ public final class Main {
                 Thread.currentThread().interrupt();
             }
 
-            ports.stopPorts();
-        } catch (PortsException | IllegalArgumentException e) {
+            portsService.stopPorts();
+        } catch (PortsServiceException | IllegalArgumentException e) {
             e.printStackTrace();
         }
     }

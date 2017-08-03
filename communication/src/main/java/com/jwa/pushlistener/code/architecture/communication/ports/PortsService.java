@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfig;
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
@@ -18,13 +17,13 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public final class Ports {
+public final class PortsService {
     private final Map<String, Port> ports;
     private final PortFactory portFactory;
 
-    public Ports(final PortFactoryConfig portFactoryConfig) throws IllegalArgumentException {
+    public PortsService(final PortFactory portFactory) throws IllegalArgumentException {
         this.ports = new LinkedHashMap<>();
-        this.portFactory = new PortFactory(portFactoryConfig);
+        this.portFactory = portFactory;
     }
 
     public final void setPort(final String portName, final PortConfig portConfig) throws IllegalArgumentException {
@@ -56,18 +55,18 @@ public final class Ports {
         sender.setCallback(callback);
     }
 
-    public final void startReceiverPort(final String portName) throws PortsException {
+    public final void startReceiverPort(final String portName) throws PortsServiceException {
         final Receiver receiver = getReceiverByName(portName);
         if (!receiver.isStarted()) {
             try {
                 receiver.start();
             } catch (PortException e) {
-                throw new PortsException("Starting receiver-port '" + portName + "' failed: " + e.getMessage(), e);
+                throw new PortsServiceException("Starting receiver-port '" + portName + "' failed: " + e.getMessage(), e);
             }
         }
     }
 
-    public final void startReceiverPorts() throws PortsException {
+    public final void startReceiverPorts() throws PortsServiceException {
         for(String receiverPortName : getReceivers().keySet()) {
             startReceiverPort(receiverPortName);
         }
@@ -95,16 +94,16 @@ public final class Ports {
         }
     }
 
-    public final void connectSender(final String portName) throws IllegalArgumentException, PortsException {
+    public final void connectSender(final String portName) throws IllegalArgumentException, PortsServiceException {
         final Sender sender = getSenderByName(portName);
         try {
             sender.connect();
         } catch (PortException e) {
-            throw new PortsException("Connecting sender-port '" + portName + "' failed: " + e.getMessage(), e);
+            throw new PortsServiceException("Connecting sender-port '" + portName + "' failed: " + e.getMessage(), e);
         }
     }
 
-    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortsException {
+    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortsServiceException {
         if (msg == null) {
             throw new IllegalArgumentException("Passed message is null");
         }
@@ -112,7 +111,7 @@ public final class Ports {
         try {
             return sender.execute(msg);
         } catch (PortException e) {
-            throw new PortsException("Executing sender-port '" + portName + "' failed: " + e.getMessage(), e);
+            throw new PortsServiceException("Executing sender-port '" + portName + "' failed: " + e.getMessage(), e);
         }
     }
 

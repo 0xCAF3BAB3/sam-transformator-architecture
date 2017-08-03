@@ -1,13 +1,15 @@
 package com.jwa.pushlistener.code.architecture.component3;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfigBuilder;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfigBuilder;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.RmiPortFactory;
-import com.jwa.pushlistener.code.architecture.communication.ports.Ports;
+import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
 
 public final class CommunicationService {
     private static CommunicationService instance;
-    private final Ports ports;
+    private final PortsService portsService;
 
     public static CommunicationService getInstance() throws IllegalArgumentException {
         if (instance == null) {
@@ -32,23 +34,23 @@ public final class CommunicationService {
     public enum AsynchronousSenders {}
 
     private CommunicationService() throws IllegalArgumentException {
-        this.ports = new Ports(
-                new PortFactoryConfigBuilder()
-                        .setFactory("Rmi", new RmiPortFactory())
-                        .build()
-        );
+        final PortFactoryConfig portFactoryConfig = new PortFactoryConfigBuilder()
+                .setFactory("Rmi", new RmiPortFactory())
+                .build();
+        final PortFactory portFactory = new PortFactory(portFactoryConfig);
+        this.portsService = new PortsService(portFactory);
         init();
     }
 
     private void init() throws IllegalArgumentException {
-        ports.setPort(Receivers.PORT1.name(),
+        portsService.setPort(Receivers.PORT1.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
                         .setParameter("Rmi.portRegistry", "11031")
                         .build()
         );
-        ports.setPort(SynchronousSenders.PORT2.name(),
+        portsService.setPort(SynchronousSenders.PORT2.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
@@ -56,7 +58,7 @@ public final class CommunicationService {
                         .setParameter("Rmi.portRegistry", "11025")
                         .build()
         );
-        ports.setPort(Receivers.PORT3.name(),
+        portsService.setPort(Receivers.PORT3.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
@@ -65,7 +67,7 @@ public final class CommunicationService {
         );
     }
 
-    public final Ports getPorts() {
-        return ports;
+    public final PortsService getPortsService() {
+        return portsService;
     }
 }
