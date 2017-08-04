@@ -7,13 +7,18 @@ import com.jwa.pushlistener.code.architecture.communication.ports.PortsServiceEx
 import com.jwa.pushlistener.code.architecture.messagemodel.BMessage;
 import com.jwa.pushlistener.code.architecture.messagemodel.EMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public final class Main {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     public static void main(final String[] args) {
         // TODO: implement me
 
         // example usage of CommunicationService
         try {
-            final CommunicationService communicationService = CommunicationService.getInstance();
+            final CommunicationService communicationService = new CommunicationService();
             final PortsService portsService = communicationService.getPortsService();
 
             portsService.setReceiverHandler(CommunicationService.Receivers.PORT1.name(),
@@ -57,7 +62,7 @@ public final class Main {
 
             portsService.stopPorts();
         } catch (PortsServiceException | IllegalArgumentException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }

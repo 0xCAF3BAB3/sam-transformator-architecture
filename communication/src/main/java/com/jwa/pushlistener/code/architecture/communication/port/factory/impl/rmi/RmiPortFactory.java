@@ -1,4 +1,4 @@
-package com.jwa.pushlistener.code.architecture.communication.port.factory.impl;
+package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi;
 
 import com.jwa.pushlistener.code.architecture.communication.port.Port;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.AbstractPortFactory;

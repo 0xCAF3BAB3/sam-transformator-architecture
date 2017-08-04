@@ -4,20 +4,10 @@ import com.jwa.pushlistener.code.architecture.communication.port.config.PortConf
 import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfigBuilder;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.RmiPortFactory;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.RmiPortFactory;
 import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
 
 public final class CommunicationService {
-    private static CommunicationService instance;
-    private final PortsService portsService;
-
-    public static CommunicationService getInstance() throws IllegalArgumentException {
-        if (instance == null) {
-            instance = new CommunicationService();
-        }
-        return instance;
-    }
-
     public enum Receivers {
         PORT1,
         PORT3
@@ -31,15 +21,22 @@ public final class CommunicationService {
         PORT2
     }
 
-    public enum AsynchronousSenders {}
+    public enum AsynchronousSenders {
+    }
 
-    private CommunicationService() throws IllegalArgumentException {
+    private final PortsService portsService;
+
+    public CommunicationService() throws IllegalArgumentException {
         final PortFactoryConfig portFactoryConfig = new PortFactoryConfigBuilder()
                 .setFactory("Rmi", new RmiPortFactory())
                 .build();
         final PortFactory portFactory = new PortFactory(portFactoryConfig);
         this.portsService = new PortsService(portFactory);
         init();
+    }
+
+    public final PortsService getPortsService() {
+        return portsService;
     }
 
     private void init() throws IllegalArgumentException {
@@ -65,9 +62,5 @@ public final class CommunicationService {
                         .setParameter("Rmi.portRegistry", "11033")
                         .build()
         );
-    }
-
-    public final PortsService getPortsService() {
-        return portsService;
     }
 }
