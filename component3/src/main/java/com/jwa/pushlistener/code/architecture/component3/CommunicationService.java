@@ -47,7 +47,7 @@ public final class CommunicationService {
                         .setParameter("Rmi.portRegistry", "11031")
                         .build()
         );
-        portsService.setPort(SynchronousSenders.PORT2.name(),
+        portsService.setPort(Senders.PORT2.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")

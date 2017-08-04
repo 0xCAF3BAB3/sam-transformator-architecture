@@ -43,7 +43,7 @@ public final class CommunicationService {
     }
 
     private void init() throws IllegalArgumentException {
-        portsService.setPort(SynchronousSenders.PORT1.name(),
+        portsService.setPort(Senders.PORT1.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
@@ -58,7 +58,7 @@ public final class CommunicationService {
                         .setParameter("Rmi.portRegistry", "11012")
                         .build()
         );
-        portsService.setPort(SynchronousSenders.PORT3.name(),
+        portsService.setPort(Senders.PORT3.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
@@ -66,7 +66,7 @@ public final class CommunicationService {
                         .setParameter("Rmi.portRegistry", "11023")
                         .build()
         );
-        portsService.setPort(SynchronousSenders.PORT4.name(),
+        portsService.setPort(Senders.PORT4.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
