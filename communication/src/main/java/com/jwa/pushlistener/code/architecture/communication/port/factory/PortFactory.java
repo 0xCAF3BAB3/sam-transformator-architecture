@@ -4,6 +4,8 @@ import com.jwa.pushlistener.code.architecture.communication.port.Port;
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
 
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +18,12 @@ import java.util.Map;
  *  o be located somewhere under the package <PACKAGE_PORTFACTORY_IMPLEMENTATIONS>
  */
 public final class PortFactory {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PortFactory.class);
     private static final String PACKAGE_PORTFACTORY_IMPLEMENTATIONS = AbstractPortFactory.class.getPackage().getName() + ".impl";
-    private final Map<String, AbstractPortFactory> cachedFactories;
+    private final Map<String, AbstractPortFactory> loadedFactories;
 
     public PortFactory() throws IllegalArgumentException {
-        this.cachedFactories = new HashMap<>();
+        this.loadedFactories = new HashMap<>();
     }
 
     public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {
@@ -28,16 +31,16 @@ public final class PortFactory {
             throw new IllegalArgumentException("Passed port-config is null");
         }
         final String portStyleName = portConfig.getStyle();
-        AbstractPortFactory cachedFactory = cachedFactories.get(portStyleName);
-        if (cachedFactory == null) {
+        AbstractPortFactory factory = loadedFactories.get(portStyleName);
+        if (factory == null) {
             boolean loaded = loadFactoryFor(portStyleName);
             if (loaded) {
-                cachedFactory = cachedFactories.get(portStyleName);
+                factory = loadedFactories.get(portStyleName);
             } else {
                 throw portConfig.generateNoImplementationFoundForStyleException();
             }
         }
-        return cachedFactory.createPort(portConfig);
+        return factory.createPort(portConfig);
     }
 
     private boolean loadFactoryFor(final String portStyleName) {
@@ -54,7 +57,8 @@ public final class PortFactory {
                 } catch (IllegalAccessException | InstantiationException e) {
                     throw new RuntimeException("Instantiating found class '" + foundFactoryClass.getName() + "' failed", e);
                 }
-                cachedFactories.put(foundFactorySupportedPortStyle, factoryInstance);
+                loadedFactories.put(foundFactorySupportedPortStyle, factoryInstance);
+                LOGGER.debug("Port-factory implementation '" + foundFactorySupportedPortStyle + "' loaded");
                 return true;
             }
         }
