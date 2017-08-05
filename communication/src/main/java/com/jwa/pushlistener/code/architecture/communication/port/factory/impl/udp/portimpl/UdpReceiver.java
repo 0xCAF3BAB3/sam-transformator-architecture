@@ -1,11 +1,11 @@
-package com.jwa.pushlistener.code.architecture.communication.port.impl.udp;
+package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl;
 
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.communication.port.PortException;
 import com.jwa.pushlistener.code.architecture.communication.port.ReceiverHandler;
 import com.jwa.pushlistener.code.architecture.communication.port.Receiver;
-import com.jwa.pushlistener.code.architecture.communication.port.impl.udp.config.UdpReceiverConfig;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.config.UdpReceiverConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

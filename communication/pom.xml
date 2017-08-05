@@ -11,12 +11,20 @@
     <groupId>com.jwa.pushlistener.code.architecture</groupId>
     <artifactId>communication</artifactId>
     <packaging>jar</packaging>
+    <properties>
+        <!-- Dependencies -->
+        <reflections.version>0.9.11</reflections.version>
+    </properties>
     <dependencies>
-        <!-- pushlistener -->
         <dependency>
             <groupId>com.jwa.pushlistener.code.architecture</groupId>
             <artifactId>messagemodel</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections.version}</version>
         </dependency>
     </dependencies>
 </project>

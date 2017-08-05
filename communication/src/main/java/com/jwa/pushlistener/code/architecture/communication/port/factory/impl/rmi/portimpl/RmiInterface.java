@@ -1,4 +1,4 @@
-package com.jwa.pushlistener.code.architecture.communication.port.impl.rmi;
+package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl;
 
 import com.google.common.base.Optional;
 

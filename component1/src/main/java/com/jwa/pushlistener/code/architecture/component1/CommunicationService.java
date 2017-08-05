@@ -1,10 +1,6 @@
 package com.jwa.pushlistener.code.architecture.component1;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfigBuilder;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfig;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.config.PortFactoryConfigBuilder;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.RmiPortFactory;
 import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
 
 public final class CommunicationService {
@@ -30,11 +26,7 @@ public final class CommunicationService {
     private final PortsService portsService;
 
     public CommunicationService() throws IllegalArgumentException {
-        final PortFactoryConfig portFactoryConfig = new PortFactoryConfigBuilder()
-                .setFactory("Rmi", new RmiPortFactory())
-                .build();
-        final PortFactory portFactory = new PortFactory(portFactoryConfig);
-        this.portsService = new PortsService(portFactory);
+        this.portsService = new PortsService();
         init();
     }
 

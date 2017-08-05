@@ -1,11 +1,11 @@
-package com.jwa.pushlistener.code.architecture.communication.port.impl.rmi;
+package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl;
 
 import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
 import com.jwa.pushlistener.code.architecture.communication.port.PortException;
 import com.jwa.pushlistener.code.architecture.communication.port.SynchronousSender;
-import com.jwa.pushlistener.code.architecture.communication.port.impl.rmi.config.RmiSenderConfig;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.config.RmiSenderConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

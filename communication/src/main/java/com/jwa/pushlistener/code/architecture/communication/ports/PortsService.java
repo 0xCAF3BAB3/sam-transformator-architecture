@@ -21,9 +21,9 @@ public final class PortsService {
     private final Map<String, Port> ports;
     private final PortFactory portFactory;
 
-    public PortsService(final PortFactory portFactory) throws IllegalArgumentException {
+    public PortsService() throws IllegalArgumentException {
         this.ports = new LinkedHashMap<>();
-        this.portFactory = portFactory;
+        this.portFactory = new PortFactory();
     }
 
     public final void setPort(final String portName, final PortConfig portConfig) throws IllegalArgumentException {

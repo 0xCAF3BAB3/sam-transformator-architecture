@@ -1,4 +1,4 @@
-package com.jwa.pushlistener.code.architecture.communication.port.impl.rmi.config;
+package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.config;
 
 public final class RmiSenderConfig extends AbstractRmiConfig {
     private final String hostname;
