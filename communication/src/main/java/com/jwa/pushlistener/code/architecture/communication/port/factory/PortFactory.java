@@ -12,7 +12,7 @@ import java.util.Map;
  * Port-factory implementations get loaded via reflection and must:
  *  o implement interface 'AbstractPortFactory'
  *  o have a zero argument constructor
- *  o have annotation 'PortFactoryStyle' set
+ *  o have annotation 'PortFactorySupportedPortStyle' set
  *  o be located somewhere under the package <PACKAGE_PORTFACTORY_IMPLEMENTATIONS>
  */
 public final class PortFactory {
@@ -27,12 +27,12 @@ public final class PortFactory {
         if (portConfig == null) {
             throw new IllegalArgumentException("Passed port-config is null");
         }
-        final String styleName = portConfig.getStyle();
-        AbstractPortFactory cachedFactory = cachedFactories.get(styleName);
+        final String portStyleName = portConfig.getStyle();
+        AbstractPortFactory cachedFactory = cachedFactories.get(portStyleName);
         if (cachedFactory == null) {
-            boolean loaded = loadFactory(styleName);
+            boolean loaded = loadFactoryFor(portStyleName);
             if (loaded) {
-                cachedFactory = cachedFactories.get(styleName);
+                cachedFactory = cachedFactories.get(portStyleName);
             } else {
                 throw portConfig.generateNoImplementationFoundForStyleException();
             }
@@ -40,21 +40,21 @@ public final class PortFactory {
         return cachedFactory.createPort(portConfig);
     }
 
-    private boolean loadFactory(final String styleName) {
+    private boolean loadFactoryFor(final String portStyleName) {
         final Reflections reflections = new Reflections(PACKAGE_PORTFACTORY_IMPLEMENTATIONS);
-        for(Class<?> foundFactoryClass : reflections.getTypesAnnotatedWith(PortFactoryStyle.class)) {
-            final String foundFactoryStyle = foundFactoryClass.getAnnotation(PortFactoryStyle.class).name();
-            if (foundFactoryStyle.equals(styleName)) {
+        for(Class<?> foundFactoryClass : reflections.getTypesAnnotatedWith(PortFactorySupportedPortStyle.class)) {
+            final String foundFactorySupportedPortStyle = foundFactoryClass.getAnnotation(PortFactorySupportedPortStyle.class).name();
+            if (foundFactorySupportedPortStyle.equals(portStyleName)) {
                 if (!AbstractPortFactory.class.isAssignableFrom(foundFactoryClass)) {
                     throw new RuntimeException("Found class '" + foundFactoryClass.getName() + "' is not a valid port-factory implementation");
                 }
-                final AbstractPortFactory factory;
+                final AbstractPortFactory factoryInstance;
                 try {
-                    factory = (AbstractPortFactory) foundFactoryClass.newInstance();
+                    factoryInstance = (AbstractPortFactory) foundFactoryClass.newInstance();
                 } catch (IllegalAccessException | InstantiationException e) {
                     throw new RuntimeException("Instantiating found class '" + foundFactoryClass.getName() + "' failed", e);
                 }
-                cachedFactories.put(foundFactoryStyle, factory);
+                cachedFactories.put(foundFactorySupportedPortStyle, factoryInstance);
                 return true;
             }
         }

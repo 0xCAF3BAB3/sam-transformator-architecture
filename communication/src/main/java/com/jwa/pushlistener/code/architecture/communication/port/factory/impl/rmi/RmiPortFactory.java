@@ -3,13 +3,13 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.r
 import com.jwa.pushlistener.code.architecture.communication.port.Port;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.AbstractPortFactory;
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactoryStyle;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactorySupportedPortStyle;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.RmiReceiver;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.RmiSynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.config.RmiReceiverConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rmi.portimpl.config.RmiSenderConfig;
 
-@PortFactoryStyle(name = "Rmi")
+@PortFactorySupportedPortStyle(name = "Rmi")
 public final class RmiPortFactory implements AbstractPortFactory {
     private static final String RMI_PARAMETER_PREFIX = "Rmi.";
 

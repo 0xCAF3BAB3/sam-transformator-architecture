@@ -3,14 +3,14 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.u
 import com.jwa.pushlistener.code.architecture.communication.port.Port;
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.AbstractPortFactory;
-import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactoryStyle;
+import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactorySupportedPortStyle;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.UdpAsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.UdpReceiver;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.UdpSynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.config.UdpReceiverConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.config.UdpSenderConfig;
 
-@PortFactoryStyle(name = "Udp")
+@PortFactorySupportedPortStyle(name = "Udp")
 public final class UdpPortFactory implements AbstractPortFactory {
     private static final String UDP_PARAMETER_PREFIX = "Udp.";
 
