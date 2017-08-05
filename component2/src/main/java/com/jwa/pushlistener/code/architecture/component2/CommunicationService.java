@@ -39,37 +39,37 @@ public final class CommunicationService {
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
-                        .setParameter("Rmi.portRegistry", "11021")
+                        .setParameter("rmi.portRegistry", "11021")
                         .build()
         );
         portsService.setPort(Senders.PORT2.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
-                        .setParameter("Rmi.hostname", "127.0.0.1")
-                        .setParameter("Rmi.portRegistry", "11012")
+                        .setParameter("rmi.hostname", "127.0.0.1")
+                        .setParameter("rmi.portRegistry", "11012")
                         .build()
         );
         portsService.setPort(Receivers.PORT3.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
-                        .setParameter("Rmi.portRegistry", "11023")
+                        .setParameter("rmi.portRegistry", "11023")
                         .build()
         );
         portsService.setPort(Senders.PORT4.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
-                        .setParameter("Rmi.hostname", "127.0.0.1")
-                        .setParameter("Rmi.portRegistry", "11031")
+                        .setParameter("rmi.hostname", "127.0.0.1")
+                        .setParameter("rmi.portRegistry", "11031")
                         .build()
         );
         portsService.setPort(Receivers.PORT5.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
-                        .setParameter("Rmi.portRegistry", "11025")
+                        .setParameter("rmi.portRegistry", "11025")
                         .build()
         );
     }

@@ -11,7 +11,7 @@ import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.rm
 
 @PortFactorySupportedPortStyle(name = "Rmi")
 public final class RmiPortFactory implements AbstractPortFactory {
-    private static final String RMI_PARAMETER_PREFIX = "Rmi.";
+    private static final String RMI_PARAMETER_PREFIX = "rmi.";
 
     @Override
     public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {

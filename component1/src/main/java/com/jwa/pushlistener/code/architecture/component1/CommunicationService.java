@@ -39,31 +39,31 @@ public final class CommunicationService {
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
-                        .setParameter("Rmi.hostname", "127.0.0.1")
-                        .setParameter("Rmi.portRegistry", "11021")
+                        .setParameter("rmi.hostname", "127.0.0.1")
+                        .setParameter("rmi.portRegistry", "11021")
                         .build()
         );
         portsService.setPort(Receivers.PORT2.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
-                        .setParameter("Rmi.portRegistry", "11012")
+                        .setParameter("rmi.portRegistry", "11012")
                         .build()
         );
         portsService.setPort(Senders.PORT3.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
-                        .setParameter("Rmi.hostname", "127.0.0.1")
-                        .setParameter("Rmi.portRegistry", "11023")
+                        .setParameter("rmi.hostname", "127.0.0.1")
+                        .setParameter("rmi.portRegistry", "11023")
                         .build()
         );
         portsService.setPort(Senders.PORT4.name(),
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
-                        .setParameter("Rmi.hostname", "127.0.0.1")
-                        .setParameter("Rmi.portRegistry", "11033")
+                        .setParameter("rmi.hostname", "127.0.0.1")
+                        .setParameter("rmi.portRegistry", "11033")
                         .build()
         );
     }

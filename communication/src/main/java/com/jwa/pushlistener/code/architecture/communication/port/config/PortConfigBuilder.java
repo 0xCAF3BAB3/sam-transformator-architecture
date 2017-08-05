@@ -31,11 +31,11 @@ public final class PortConfigBuilder {
         final PortConfig portConfig = new PortConfig(style, type, parameters);
         final String style = portConfig.getStyle();
         if (style == null || style.isEmpty()) {
-            throw new IllegalArgumentException("Passed style is invalid");
+            throw new IllegalArgumentException("Passed style is missing or invalid");
         }
         final String type = portConfig.getType();
         if (type == null || type.isEmpty()) {
-            throw new IllegalArgumentException("Passed type is invalid");
+            throw new IllegalArgumentException("Passed type is missing or invalid");
         }
         return portConfig;
     }

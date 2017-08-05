@@ -12,7 +12,7 @@ import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.ud
 
 @PortFactorySupportedPortStyle(name = "Udp")
 public final class UdpPortFactory implements AbstractPortFactory {
-    private static final String UDP_PARAMETER_PREFIX = "Udp.";
+    private static final String UDP_PARAMETER_PREFIX = "udp.";
 
     @Override
     public final Port createPort(final PortConfig portConfig) throws IllegalArgumentException {
