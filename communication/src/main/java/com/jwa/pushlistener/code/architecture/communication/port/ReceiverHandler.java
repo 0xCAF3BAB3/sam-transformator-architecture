@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port;
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 
 public interface ReceiverHandler {
     /**
@@ -10,5 +10,5 @@ public interface ReceiverHandler {
      * @param msg must not be null
      * @return
      */
-    Optional<MessageModel> handle(final MessageModel msg);
+    Optional<Message> handle(final Message msg);
 }

@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.r
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 import com.jwa.pushlistener.code.architecture.communication.port.PortException;
 import com.jwa.pushlistener.code.architecture.communication.port.ReceiverHandler;
 import com.jwa.pushlistener.code.architecture.communication.port.Receiver;
@@ -73,7 +73,7 @@ public final class RmiReceiver implements Receiver {
             private DelegateRmiInterface() throws RemoteException {}
 
             @Override
-            public final Optional<MessageModel> execute(final MessageModel msg) throws RemoteException {
+            public final Optional<Message> execute(final Message msg) throws RemoteException {
                 return handler.handle(msg);
             }
         }

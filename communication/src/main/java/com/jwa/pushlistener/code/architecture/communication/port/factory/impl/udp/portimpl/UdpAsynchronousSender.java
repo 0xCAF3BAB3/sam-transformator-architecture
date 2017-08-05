@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.u
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 import com.jwa.pushlistener.code.architecture.communication.port.PortException;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
@@ -52,7 +52,7 @@ public final class UdpAsynchronousSender implements AsynchronousSender {
     }
 
     @Override
-    public final Optional<MessageModel> execute(final MessageModel msg) throws PortException {
+    public final Optional<Message> execute(final Message msg) throws PortException {
         if (!isConnected()) {
             throw new PortException("Not connected");
         }

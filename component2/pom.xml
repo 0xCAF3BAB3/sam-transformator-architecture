@@ -14,12 +14,12 @@
     <dependencies>
         <dependency>
             <groupId>com.jwa.pushlistener.code.architecture</groupId>
-            <artifactId>messagemodel</artifactId>
+            <artifactId>communication</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jwa.pushlistener.code.architecture</groupId>
-            <artifactId>communication</artifactId>
+            <artifactId>messagemodel</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

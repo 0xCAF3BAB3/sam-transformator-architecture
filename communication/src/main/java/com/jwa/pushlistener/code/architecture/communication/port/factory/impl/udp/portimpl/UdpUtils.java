@@ -1,6 +1,6 @@
 package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,7 +16,7 @@ final class UdpUtils {
     private static final int MAX_SIZE_DATAGRAM_PAYLOAD = 65507; // source: http://openbook.rheinwerk-verlag.de/java7/1507_11_011.html#dodtp497f87ed-dd23-48d4-80c7-7e11b3ec99d6
     static final int DATAGRAM_BUFFER_SIZE = 1024; // 1 KiB
 
-    private static byte[] serialize(final MessageModel msg) throws IOException {
+    private static byte[] serialize(final Message msg) throws IOException {
         final ByteArrayOutputStream bStream = new ByteArrayOutputStream();
         final ObjectOutput oo = new ObjectOutputStream(bStream);
         oo.writeObject(msg);
@@ -24,10 +24,10 @@ final class UdpUtils {
         return bStream.toByteArray();
     }
 
-    static MessageModel deserialize(final byte[] data) throws IOException {
+    static Message deserialize(final byte[] data) throws IOException {
         try {
             final ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(data));
-            final MessageModel msg = (MessageModel) iStream.readObject();
+            final Message msg = (Message) iStream.readObject();
             iStream.close();
             return msg;
         } catch (ClassNotFoundException e) {
@@ -41,7 +41,7 @@ final class UdpUtils {
         }
     }
 
-    static void send(final MessageModel msg, final SocketAddress recipient, final DatagramSocket datagramSocket) throws IOException {
+    static void send(final Message msg, final SocketAddress recipient, final DatagramSocket datagramSocket) throws IOException {
         final byte[] byteMessage = serialize(msg);
         if (byteMessage.length > MAX_SIZE_DATAGRAM_PAYLOAD) {
             throw new IOException("Message too large, exceeds " + MAX_SIZE_DATAGRAM_PAYLOAD + " bytes");

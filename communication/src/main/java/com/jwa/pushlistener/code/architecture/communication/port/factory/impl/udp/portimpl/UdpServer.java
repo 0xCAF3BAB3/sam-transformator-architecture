@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.u
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
 import com.jwa.pushlistener.code.architecture.communication.port.ReceiverHandler;
 
@@ -94,9 +94,9 @@ final class UdpServer implements Runnable {
         @Override
         public final void run() {
             try {
-                final MessageModel request = UdpUtils.deserialize(datagramPacket.getData());
+                final Message request = UdpUtils.deserialize(datagramPacket.getData());
                 if (handler != null) {
-                    final Optional<MessageModel> response = handler.handle(request);
+                    final Optional<Message> response = handler.handle(request);
                     final SocketAddress recipient = datagramPacket.getSocketAddress();
                     UdpUtils.send(response.or(new UdpAckMessage()), recipient, datagramSocket);
                 } else {

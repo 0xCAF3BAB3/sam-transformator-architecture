@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfig;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.PortFactory;
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.AsynchronousSenderCallback;
 import com.jwa.pushlistener.code.architecture.communication.port.Port;
@@ -103,7 +103,7 @@ public final class PortsService {
         }
     }
 
-    public final Optional<MessageModel> executeSender(final String portName, final MessageModel msg) throws IllegalArgumentException, PortsServiceException {
+    public final Optional<Message> executeSender(final String portName, final Message msg) throws IllegalArgumentException, PortsServiceException {
         if (msg == null) {
             throw new IllegalArgumentException("Passed message is null");
         }

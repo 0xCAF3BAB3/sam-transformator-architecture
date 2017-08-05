@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port.factory.impl.u
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 import com.jwa.pushlistener.code.architecture.communication.port.PortException;
 import com.jwa.pushlistener.code.architecture.communication.port.SynchronousSender;
 import com.jwa.pushlistener.code.architecture.communication.port.factory.impl.udp.portimpl.config.UdpSenderConfig;
@@ -45,7 +45,7 @@ public final class UdpSynchronousSender implements SynchronousSender {
     }
 
     @Override
-    public final Optional<MessageModel> execute(final MessageModel msg) throws PortException {
+    public final Optional<Message> execute(final Message msg) throws PortException {
         if (!isConnected()) {
             throw new PortException("Not connected");
         }
@@ -59,7 +59,7 @@ public final class UdpSynchronousSender implements SynchronousSender {
         final byte[] buffer = new byte[UdpUtils.DATAGRAM_BUFFER_SIZE];
         final DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
         // listen for reply and block until then (or until timeout)
-        final MessageModel response;
+        final Message response;
         try {
             datagramSocket.receive(datagramPacket);
             response = UdpUtils.deserialize(datagramPacket.getData());

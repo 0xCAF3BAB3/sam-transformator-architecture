@@ -2,7 +2,7 @@ package com.jwa.pushlistener.code.architecture.communication.port;
 
 import com.google.common.base.Optional;
 
-import com.jwa.pushlistener.code.architecture.messagemodel.MessageModel;
+import com.jwa.pushlistener.code.architecture.communication.Message;
 
 public interface Sender extends Port {
     /**
@@ -16,10 +16,10 @@ public interface Sender extends Port {
     /**
      *
      * @param msg must not be null
-     * @return Optional<MessageModel> if communication is synchronous, Optional.empty() if communication is asynchronous
+     * @return Optional<Message> if communication is synchronous, Optional.empty() if communication is asynchronous
      * @throws PortException if a connection problem occured or not connected
      */
-    Optional<MessageModel> execute(final MessageModel msg) throws PortException;
+    Optional<Message> execute(final Message msg) throws PortException;
 
     /**
      * Closes the connection.
