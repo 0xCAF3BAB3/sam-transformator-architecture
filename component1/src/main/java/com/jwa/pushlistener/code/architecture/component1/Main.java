@@ -15,8 +15,6 @@ public final class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(final String[] args) {
-        // TODO: implement me
-
         // example usage of CommunicationService
         final CommunicationService communicationService = new CommunicationService();
         final PortsService portsService = communicationService.getPortsService();
