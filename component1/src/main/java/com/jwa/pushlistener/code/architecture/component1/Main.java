@@ -18,9 +18,10 @@ public final class Main {
         // TODO: implement me
 
         // example usage of CommunicationService
+        final CommunicationService communicationService = new CommunicationService();
+        final PortsService portsService = communicationService.getPortsService();
         try {
-            final CommunicationService communicationService = new CommunicationService();
-            final PortsService portsService = communicationService.getPortsService();
+            communicationService.init();
             /*
             optional: set receiver-handlers, e.g.:
             portsService.setReceiverHandler(
@@ -68,14 +69,15 @@ public final class Main {
             portsService.executeSender(CommunicationService.Senders.PORT3.getName(), new CMessage());
             portsService.connectSender(CommunicationService.Senders.PORT4.getName());
             portsService.executeSender(CommunicationService.Senders.PORT4.getName(), new DMessage());
+        } catch (PortsServiceException e) {
+            LOGGER.error(e.getMessage(), e);
+        } finally {
             try {
                 Thread.sleep(20 * 1000);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
             portsService.stopPorts();
-        } catch (PortsServiceException | IllegalArgumentException e) {
-            LOGGER.error(e.getMessage(), e);
         }
     }
 }

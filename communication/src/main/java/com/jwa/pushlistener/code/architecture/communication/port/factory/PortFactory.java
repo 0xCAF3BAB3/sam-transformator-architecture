@@ -22,7 +22,7 @@ public final class PortFactory {
     private static final String PACKAGE_PORTFACTORY_IMPLEMENTATIONS = AbstractPortFactory.class.getPackage().getName() + ".impl";
     private final Map<String, AbstractPortFactory> loadedFactories;
 
-    public PortFactory() throws IllegalArgumentException {
+    public PortFactory() {
         this.loadedFactories = new HashMap<>();
     }
 

@@ -21,35 +21,35 @@ public final class PortsService {
     private final Map<String, Port> ports;
     private final PortFactory portFactory;
 
-    public PortsService() throws IllegalArgumentException {
+    public PortsService() {
         this.ports = new LinkedHashMap<>();
         this.portFactory = new PortFactory();
     }
 
-    public final void setPort(final String portName, final PortConfig portConfig) throws IllegalArgumentException {
+    public final void setPort(final String portName, final PortConfig portConfig) throws PortsServiceException {
         if (portName == null || portName.isEmpty()) {
-            throw new IllegalArgumentException("Passed port-name is invalid");
+            throw new PortsServiceException("Passed port-name is invalid");
         }
         final Port port;
         try {
             port = portFactory.createPort(portConfig);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Port creation failed: " + e.getMessage(), e);
+            throw new PortsServiceException("Port creation failed: " + e.getMessage(), e);
         }
         ports.put(portName, port);
     }
 
-    public final void setReceiverHandler(final String portName, final ReceiverHandler handler) throws IllegalArgumentException {
+    public final void setReceiverHandler(final String portName, final ReceiverHandler handler) throws PortsServiceException {
         if (handler == null) {
-            throw new IllegalArgumentException("Passed handler is null");
+            throw new PortsServiceException("Passed handler is null");
         }
         final Receiver receiver = getReceiverByName(portName);
         receiver.setHandler(handler);
     }
 
-    public final void setAsynchronousSenderCallback(final String portName, final AsynchronousSenderCallback callback) throws IllegalArgumentException {
+    public final void setAsynchronousSenderCallback(final String portName, final AsynchronousSenderCallback callback) throws PortsServiceException {
         if (callback == null) {
-            throw new IllegalArgumentException("Passed callback is null");
+            throw new PortsServiceException("Passed callback is null");
         }
         final AsynchronousSender sender = getAsynchronousSenderByName(portName);
         sender.setCallback(callback);
@@ -57,31 +57,43 @@ public final class PortsService {
 
     public final void startReceiverPort(final String portName) throws PortsServiceException {
         final Receiver receiver = getReceiverByName(portName);
-        if (!receiver.isStarted()) {
+        startReceiverPort(receiver);
+    }
+
+    public final void startReceiverPorts() throws PortsServiceException {
+        for(Map.Entry<String, Receiver> receiver : getReceivers().entrySet()) {
             try {
-                receiver.start();
-            } catch (PortException e) {
-                throw new PortsServiceException("Starting receiver-port '" + portName + "' failed: " + e.getMessage(), e);
+                startReceiverPort(receiver.getValue());
+            } catch (PortsServiceException e) {
+                throw new PortsServiceException("Starting receiver-port '" + receiver.getKey() + "' failed: " + e.getMessage(), e);
             }
         }
     }
 
-    public final void startReceiverPorts() throws PortsServiceException {
-        for(String receiverPortName : getReceivers().keySet()) {
-            startReceiverPort(receiverPortName);
+    private void startReceiverPort(final Receiver receiver) throws PortsServiceException {
+        if (!receiver.isStarted()) {
+            try {
+                receiver.start();
+            } catch (PortException e) {
+                throw new PortsServiceException("Starting receiver-port failed: " + e.getMessage(), e);
+            }
         }
     }
 
-    public final void stopReceiverPort(final String portName) {
+    public final void stopReceiverPort(final String portName) throws PortsServiceException {
         final Receiver receiver = getReceiverByName(portName);
-        if (receiver.isStarted()) {
-            receiver.shutdown();
-        }
+        stopReceiverPort(receiver);
     }
 
     public final void stopReceiverPorts() {
-        for(String receiverPortName : getReceivers().keySet()) {
-            stopReceiverPort(receiverPortName);
+        for(Receiver receiver : getReceivers().values()) {
+            stopReceiverPort(receiver);
+        }
+    }
+
+    private void stopReceiverPort(final Receiver receiver) {
+        if (receiver.isStarted()) {
+            receiver.shutdown();
         }
     }
 
@@ -94,7 +106,7 @@ public final class PortsService {
         }
     }
 
-    public final void connectSender(final String portName) throws IllegalArgumentException, PortsServiceException {
+    public final void connectSender(final String portName) throws PortsServiceException {
         final Sender sender = getSenderByName(portName);
         try {
             sender.connect();
@@ -103,9 +115,9 @@ public final class PortsService {
         }
     }
 
-    public final Optional<Message> executeSender(final String portName, final Message msg) throws IllegalArgumentException, PortsServiceException {
+    public final Optional<Message> executeSender(final String portName, final Message msg) throws PortsServiceException {
         if (msg == null) {
-            throw new IllegalArgumentException("Passed message is null");
+            throw new PortsServiceException("Passed message is null");
         }
         final Sender sender = getSenderByName(portName);
         try {
@@ -115,38 +127,38 @@ public final class PortsService {
         }
     }
 
-    private Port getPortByName(final String portName) throws IllegalArgumentException {
+    private Port getPortByName(final String portName) throws PortsServiceException {
         final Port port = ports.get(portName);
         if (port == null) {
-            throw new IllegalArgumentException("Passed port not found");
+            throw new PortsServiceException("Passed port not found");
         }
         return port;
     }
 
-    private Sender getSenderByName(final String portName) throws IllegalArgumentException {
+    private Sender getSenderByName(final String portName) throws PortsServiceException {
         final Port port = getPortByName(portName);
         if (port instanceof Sender) {
              return (Sender) port;
         } else {
-            throw new IllegalArgumentException("Passed port is not from type Sender");
+            throw new PortsServiceException("Passed port is not from type Sender");
         }
     }
 
-    private AsynchronousSender getAsynchronousSenderByName(final String portName) throws IllegalArgumentException {
+    private AsynchronousSender getAsynchronousSenderByName(final String portName) throws PortsServiceException {
         final Port port = getPortByName(portName);
         if (port instanceof AsynchronousSender) {
             return (AsynchronousSender) port;
         } else {
-            throw new IllegalArgumentException("Passed port is not from type AsynchronousSender");
+            throw new PortsServiceException("Passed port is not from type AsynchronousSender");
         }
     }
 
-    private Receiver getReceiverByName(final String portName) throws IllegalArgumentException {
+    private Receiver getReceiverByName(final String portName) throws PortsServiceException {
         final Port port = getPortByName(portName);
         if (port instanceof Receiver) {
             return (Receiver) port;
         } else {
-            throw new IllegalArgumentException("Passed port is not from type Receiver");
+            throw new PortsServiceException("Passed port is not from type Receiver");
         }
     }
 

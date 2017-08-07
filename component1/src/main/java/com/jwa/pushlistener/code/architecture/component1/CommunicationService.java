@@ -2,6 +2,7 @@ package com.jwa.pushlistener.code.architecture.component1;
 
 import com.jwa.pushlistener.code.architecture.communication.port.config.PortConfigBuilder;
 import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
+import com.jwa.pushlistener.code.architecture.communication.ports.PortsServiceException;
 
 public final class CommunicationService {
     public enum Receivers {
@@ -61,16 +62,11 @@ public final class CommunicationService {
 
     private final PortsService portsService;
 
-    public CommunicationService() throws IllegalArgumentException {
+    public CommunicationService() {
         this.portsService = new PortsService();
-        init();
     }
 
-    public final PortsService getPortsService() {
-        return portsService;
-    }
-
-    private void init() throws IllegalArgumentException {
+    public final void init() throws PortsServiceException {
         portsService.setPort(
                 "Port1",
                 new PortConfigBuilder()
@@ -106,5 +102,9 @@ public final class CommunicationService {
                         .setParameter("rmi.portRegistry", "11033")
                         .build()
         );
+    }
+
+    public final PortsService getPortsService() {
+        return portsService;
     }
 }
