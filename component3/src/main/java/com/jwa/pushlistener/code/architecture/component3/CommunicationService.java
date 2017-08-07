@@ -5,19 +5,55 @@ import com.jwa.pushlistener.code.architecture.communication.ports.PortsService;
 
 public final class CommunicationService {
     public enum Receivers {
-        PORT1,
-        PORT3
+        PORT1("Port1"),
+        PORT3("Port3")
+        ;
+
+        private final String name;
+        Receivers(final String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
     }
 
     public enum Senders {
-        PORT2
+        PORT2("Port2")
+        ;
+
+        private final String name;
+        Senders(final String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
     }
 
     public enum SynchronousSenders {
-        PORT2
+        PORT2("Port2")
+        ;
+
+        private final String name;
+        SynchronousSenders(final String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
     }
 
     public enum AsynchronousSenders {
+        ;
+
+        private final String name;
+        AsynchronousSenders(final String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return name;
+        }
     }
 
     private final PortsService portsService;
@@ -32,14 +68,16 @@ public final class CommunicationService {
     }
 
     private void init() throws IllegalArgumentException {
-        portsService.setPort(Receivers.PORT1.name(),
+        portsService.setPort(
+                "Port1",
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")
                         .setParameter("rmi.portRegistry", "11031")
                         .build()
         );
-        portsService.setPort(Senders.PORT2.name(),
+        portsService.setPort(
+                "Port2",
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Sender/SynchronousSender")
@@ -47,7 +85,8 @@ public final class CommunicationService {
                         .setParameter("rmi.portRegistry", "11025")
                         .build()
         );
-        portsService.setPort(Receivers.PORT3.name(),
+        portsService.setPort(
+                "Port3",
                 new PortConfigBuilder()
                         .setStyle("Rmi")
                         .setType("Receiver")

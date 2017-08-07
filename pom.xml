@@ -5,7 +5,6 @@
     <artifactId>architecture</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <name>PushListener-Code-Architecture</name>
     <modules>
         <module>communication</module>
         <module>messagemodel</module>

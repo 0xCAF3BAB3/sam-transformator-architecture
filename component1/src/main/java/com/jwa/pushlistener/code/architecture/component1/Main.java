@@ -21,37 +21,58 @@ public final class Main {
         try {
             final CommunicationService communicationService = new CommunicationService();
             final PortsService portsService = communicationService.getPortsService();
-
-            portsService.setReceiverHandler(CommunicationService.Receivers.PORT2.name(),
-                msg -> {
-                    System.out.println("ReceiverHandler on port '" + CommunicationService.Receivers.PORT2.name() + "' got called");
-                    return Optional.absent();
-                }
+            /*
+            optional: set receiver-handlers, e.g.:
+            portsService.setReceiverHandler(
+                    CommunicationService.Receivers.PORTX.getName(),
+                    msg -> {
+                        ...
+                        return ...;
+                    }
             );
-
+            */
+            portsService.setReceiverHandler(
+                    CommunicationService.Receivers.PORT2.getName(),
+                    msg -> {
+                        System.out.println("ReceiverHandler on port '" + CommunicationService.Receivers.PORT2.getName() + "' got called");
+                        return Optional.absent();
+                    }
+            );
+            /*
+            optional: set asynchronous-sender-callbacks, e.g.:
+            portsService.setAsynchronousSenderCallback(
+                    CommunicationService.AsynchronousSenders.PORTX.getName(),
+                    msg -> {
+                        ...
+                    });
+            */
             portsService.startReceiverPorts();
-
             try {
                 Thread.sleep(20 * 1000);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
-
-            portsService.connectSender(CommunicationService.Senders.PORT1.name());
-            portsService.executeSender(CommunicationService.Senders.PORT1.name(), new AMessage());
-
-            portsService.connectSender(CommunicationService.Senders.PORT3.name());
-            portsService.executeSender(CommunicationService.Senders.PORT3.name(), new CMessage());
-
-            portsService.connectSender(CommunicationService.Senders.PORT4.name());
-            portsService.executeSender(CommunicationService.Senders.PORT4.name(), new DMessage());
-
+            /*
+            optional: connect and execute senders, e.g.:
+            portsService.connectSender(
+                    CommunicationService.Senders.PORTX.getName()
+            );
+            portsService.executeSender(
+                    CommunicationService.Senders.PORTX.getName(),
+                    ...
+            );
+            */
+            portsService.connectSender(CommunicationService.Senders.PORT1.getName());
+            portsService.executeSender(CommunicationService.Senders.PORT1.getName(), new AMessage());
+            portsService.connectSender(CommunicationService.Senders.PORT3.getName());
+            portsService.executeSender(CommunicationService.Senders.PORT3.getName(), new CMessage());
+            portsService.connectSender(CommunicationService.Senders.PORT4.getName());
+            portsService.executeSender(CommunicationService.Senders.PORT4.getName(), new DMessage());
             try {
                 Thread.sleep(20 * 1000);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
-
             portsService.stopPorts();
         } catch (PortsServiceException | IllegalArgumentException e) {
             LOGGER.error(e.getMessage(), e);
