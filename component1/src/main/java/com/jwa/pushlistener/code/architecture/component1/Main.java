@@ -43,7 +43,8 @@ public final class Main {
                     CommunicationService.AsynchronousSenders.PORTX.getName(),
                     msg -> {
                         ...
-                    });
+                    }
+            );
             */
             portsService.startReceiverPorts();
             // for testing: wait 20sec before continuing
