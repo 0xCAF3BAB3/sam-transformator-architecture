@@ -51,6 +51,7 @@ public final class Main {
                     });
             */
             portsService.startReceiverPorts();
+            // for testing: wait 20sec before continuing
             try {
                 Thread.sleep(20 * 1000);
             } catch (InterruptedException ex) {
@@ -71,6 +72,7 @@ public final class Main {
         } catch (PortsServiceException e) {
             LOGGER.error(e.getMessage(), e);
         } finally {
+            // for testing: wait 20sec before continuing
             try {
                 Thread.sleep(20 * 1000);
             } catch (InterruptedException ex) {
